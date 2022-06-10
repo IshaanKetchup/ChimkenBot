@@ -116,6 +116,7 @@ class Help(commands.Cog):
         emb3.set_thumbnail(url = self.bot.user.display_avatar)
 
         emb4 = discord.Embed(title = '**OTHER COMMANDS**', color = discord.Color.random())
+        emb4.add_field(name = "Sus", value = ">sus @user", inline = True)
         emb4.add_field(name = "Jokes", value = ">funny", inline= True)        
         emb4.add_field(name = "News", value ='>news', inline = True)
         emb4.add_field(name = "Google search", value = ">search (search query)", inline= True)
