@@ -18,7 +18,7 @@ bot = commands.Bot(intents = intents, case_insensitive = True, command_prefix = 
 async def on_ready():
         print(f'Logged in as {bot.user}')
         print('Status Online')
-        await bot.change_presence(status = discord.Status.online, activity = discord.Game('!help'))
+        await bot.change_presence(status = discord.Status.online, activity = discord.Game('>help'))
 
 @bot.command()
 async def servers(ctx):
