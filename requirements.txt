@@ -1,0 +1,8 @@
+py-cord==2.0.0rc1
+asyncpraw
+asyncio
+beautifulsoup4
+lxml
+discord-components
+psycopg2
+asyncpg
