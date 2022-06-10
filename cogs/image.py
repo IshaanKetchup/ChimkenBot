@@ -27,7 +27,7 @@ class Image(commands.Cog):
 
         sus.save("sussy.jpg")
         emb = Embed(description= f'{member.mention} kinda sus', colour= discord.Color.random())
-        await ctx.send(file = discord.File("sussy.jpg"))
+        await ctx.reply(file = discord.File("sussy.jpg"))
 
     @commands.command()
     async def gay(self, ctx, member: discord.Member):
