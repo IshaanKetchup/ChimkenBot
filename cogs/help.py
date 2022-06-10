@@ -34,15 +34,15 @@ class Help(commands.Cog):
                 elif pg == 2:
                     button.disabled = False
                     button2.disabled = False
-                    emb = emb2
+                    emb = emb3 #change to emb2
                 elif pg == 3:
-                    button.disabled = False
+                    button.disabled = True #change back to False
                     button2.disabled = False
-                    emb = emb3
-                elif pg == 4:
+                    emb = emb4 #change to emb3
+                '''elif pg == 4:
                     button.disabled = False
                     button2.disabled = True
-                    emb = emb4
+                    emb = emb4'''
                 await interaction.response.edit_message(embed = emb, view = self)
             
             @discord.ui.button(label=">>", style=discord.ButtonStyle.primary, row = 0, custom_id= 'right') 
@@ -58,15 +58,15 @@ class Help(commands.Cog):
                 elif pg == 2:
                     button.disabled = False
                     button1.disabled = False
-                    emb = emb2
+                    emb = emb3 #change to emb2
                 elif pg == 3:
-                    button.disabled = False
+                    button.disabled = True #change to false when currency commands up
                     button1.disabled = False
-                    emb = emb3
-                elif pg == 4:
+                    emb = emb4 #change to emb3 when currency commands up
+                '''elif pg == 4:
                     button.disabled = True
                     button1.disabled = False
-                    emb = emb4
+                    emb = emb4'''
                 await interaction.response.edit_message(embed = emb, view = self)
                 
             async def on_timeout(self):
