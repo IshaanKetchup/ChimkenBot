@@ -53,6 +53,6 @@ for filename in os.listdir(r"cogs"):
                 bot.load_extension(f'cogs.{filename[:-3]}')
 
         
-bot.run(os.environ[DISCORD_TOKEN])
+bot.run(os.environ['DISCORD_TOKEN'])
 def p(*args):
        sys.stdout.flush(args[0] % (len(args) > 1 and args[1:] or []))
