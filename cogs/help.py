@@ -15,15 +15,26 @@ class Help(commands.Cog):
 
     @commands.command()
     async def help(self, ctx):
-        
-        
+
         class HelpView(discord.ui.View): 
             global pg
             pg = 1
 
+            def __init__(self,ctx):
+                super().__init__(timeout=10)
+                self.ctx = ctx
+
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
             @discord.ui.button(label = '<<', style = discord.ButtonStyle.primary, row = 0, custom_id= 'left', disabled = True)
             async def button1_callback(self, button, interaction):
+                
                 button2 = [x for x in self.children if x.custom_id == 'right'][0]
                 global pg
                 pg -= 1
@@ -34,15 +45,15 @@ class Help(commands.Cog):
                 elif pg == 2:
                     button.disabled = False
                     button2.disabled = False
-                    emb = emb3 #change to emb2
+                    emb = emb2
                 elif pg == 3:
-                    button.disabled = True #change back to False
+                    button.disabled = False
                     button2.disabled = False
-                    emb = emb4 #change to emb3
-                '''elif pg == 4:
+                    emb = emb3
+                elif pg == 4:
                     button.disabled = False
                     button2.disabled = True
-                    emb = emb4'''
+                    emb = emb4
                 await interaction.response.edit_message(embed = emb, view = self)
             
             @discord.ui.button(label=">>", style=discord.ButtonStyle.primary, row = 0, custom_id= 'right') 
@@ -58,15 +69,15 @@ class Help(commands.Cog):
                 elif pg == 2:
                     button.disabled = False
                     button1.disabled = False
-                    emb = emb3 #change to emb2
+                    emb = emb2
                 elif pg == 3:
-                    button.disabled = True #change to false when currency commands up
+                    button.disabled = False
                     button1.disabled = False
-                    emb = emb4 #change to emb3 when currency commands up
-                '''elif pg == 4:
+                    emb = emb3
+                elif pg == 4:
                     button.disabled = True
                     button1.disabled = False
-                    emb = emb4'''
+                    emb = emb4
                 await interaction.response.edit_message(embed = emb, view = self)
                 
             async def on_timeout(self):
@@ -114,7 +125,7 @@ class Help(commands.Cog):
         emb4.set_thumbnail(url = self.bot.user.display_avatar)
         
     
-        HelpView.message = await ctx.send(embed = emb1, view = HelpView(timeout = 10))
+        HelpView.message = await ctx.send(embed = emb1, view = HelpView(ctx))
             
 
 
