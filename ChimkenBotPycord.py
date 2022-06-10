@@ -11,7 +11,7 @@ import os
 intents = discord.Intents.all()
 intents.message_content = True
 
-bot = commands.Bot(intents = intents, case_insensitive = True, command_prefix = "!", help_command = None)
+bot = commands.Bot(intents = intents, case_insensitive = True, command_prefix = ">", help_command = None)
 
 
 @bot.event
