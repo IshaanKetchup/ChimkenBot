@@ -48,7 +48,7 @@ class Image(commands.Cog):
         data = BytesIO(await asset.read())
         pfp = PIL.Image.open(data).convert('RGB')
 
-        merger  = PIL.Image.open('media//America.jpg').convert('RGB')
+        merger  = PIL.Image.open('media//america.jpg').convert('RGB')
         merger = merger.resize(pfp.size)
 
         blended = PIL.Image.blend(pfp, merger, 0.25)
@@ -63,7 +63,7 @@ class Image(commands.Cog):
         pfp = PIL.Image.open(data).convert('RGB')
 
         merger  = PIL.Image.open('media//india.png').convert('RGB')
-        primergerde = merger.resize(pfp.size)
+        merger = merger.resize(pfp.size)
 
         blended = PIL.Image.blend(pfp, merger, 0.25)
         blended.save('indiablend.jpg')
@@ -77,7 +77,7 @@ class Image(commands.Cog):
         pfp = PIL.Image.open(data).convert('L')
         pfp.save('sad.jpg')
 
-        await ctx.reply(file = discord.File("save.jpg"))
+        await ctx.reply(file = discord.File("sad.jpg"))
            
     @commands.command()
     async def ww2(self, ctx, member: discord.Member):
