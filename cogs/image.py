@@ -31,23 +31,16 @@ class Image(commands.Cog):
 
     @commands.command()
     async def gay(self, ctx, member: discord.Member):
-        pride  = PIL.Image.open('pride.jpg')
-        pride.putalpha(100)
-        pride.save('pride2.jpg')
-
-        '''asset = member.display_avatar
-
-        pride2 = PIL.Image.open('pride2.jpg')
-
+        asset = member.display_avatar
         data = BytesIO(await asset.read())
-        pfp = PIL.Image.open(data)
+        pfp = PIL.Image.open(data).convert('RGB')
 
-        pfp = pfp.resize((250, 250))
-        pfp.paste(pride2, (120,120))
+        pride  = PIL.Image.open('pride.jpg').convert('RGB')
+        pride = pride.resize(pfp.size)
 
-        pfp.save("pride.jpg")
-
-        await ctx.send(file = discord.File("pride.jpg"))'''
+        blended = PIL.Image.blend(pfp, pride, 0.4)
+        blended.save('blended.jpg')
+        await ctx.send(file = discord.File("blended.jpg"))
 
         
         
