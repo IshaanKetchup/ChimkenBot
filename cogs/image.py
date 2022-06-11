@@ -41,7 +41,43 @@ class Image(commands.Cog):
         blended = PIL.Image.blend(pfp, pride, 0.4)
         blended.save('blended.jpg')
         await ctx.reply(file = discord.File("blended.jpg"))
+    
+    @commands.command()
+    async def usa(self, ctx, member: discord.Member):
+        asset = member.display_avatar
+        data = BytesIO(await asset.read())
+        pfp = PIL.Image.open(data).convert('RGB')
 
+        pride  = PIL.Image.open('america.jpg').convert('RGB')
+        pride = pride.resize(pfp.size)
+
+        blended = PIL.Image.blend(pfp, pride, 0.25)
+        blended.save('americablend.jpg')
+
+        await ctx.reply(file = discord.File("americablend.jpg"))
+
+    @commands.command()
+    async def india(self, ctx, member: discord.Member):
+        asset = member.display_avatar
+        data = BytesIO(await asset.read())
+        pfp = PIL.Image.open(data).convert('RGB')
+
+        pride  = PIL.Image.open('india.png').convert('RGB')
+        pride = pride.resize(pfp.size)
+
+        blended = PIL.Image.blend(pfp, pride, 0.25)
+        blended.save('indiablend.jpg')
+
+        await ctx.reply(file = discord.File("indiablend.jpg"))
+
+    @commands.command()
+    async def sad(self, ctx, member: discord.Member):
+        asset = member.display_avatar
+        data = BytesIO(await asset.read())
+        pfp = PIL.Image.open(data).convert('L')
+        pfp.save('save.jpg')
+
+        await ctx.reply(file = discord.File("save.jpg"))
         
         
 
