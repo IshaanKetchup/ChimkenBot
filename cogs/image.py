@@ -48,7 +48,7 @@ class Image(commands.Cog):
         data = BytesIO(await asset.read())
         pfp = PIL.Image.open(data).convert('RGB')
 
-        prmergeride  = PIL.Image.open('media//america.jpg').convert('RGB')
+        prmergeride  = PIL.Image.open('media//America.jpg').convert('RGB')
         merger = merger.resize(pfp.size)
 
         blended = PIL.Image.blend(pfp, merger, 0.25)
