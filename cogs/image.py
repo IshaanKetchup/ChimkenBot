@@ -25,8 +25,8 @@ class Image(commands.Cog):
         pfp = pfp.resize((251, 251))
         sus.paste(pfp, (175,100))
 
-        sus.save("delete//sussy.jpg")
-        await ctx.send(file = discord.File("delete//sussy.jpg"))
+        sus.save("sussy.jpg")
+        await ctx.send(file = discord.File("sussy.jpg"))
 
     @commands.command()
     async def gay(self, ctx, member: discord.Member):
@@ -38,9 +38,9 @@ class Image(commands.Cog):
         pride = pride.resize(pfp.size)
 
         blended = PIL.Image.blend(pfp, pride, 0.5)
-        blended.save('delete//blended.jpg')
+        blended.save('blended.jpg')
 
-        await ctx.reply(file = discord.File("delete//blended.jpg"))
+        await ctx.reply(file = discord.File("blended.jpg"))
 
     @commands.command()
     async def usa(self, ctx, member: discord.Member):
@@ -52,9 +52,9 @@ class Image(commands.Cog):
         merger = merger.resize(pfp.size)
 
         blended = PIL.Image.blend(pfp, merger, 0.25)
-        blended.save('delete//americablend.jpg')
+        blended.save('americablend.jpg')
 
-        await ctx.reply(file = discord.File("delete//americablend.jpg"))
+        await ctx.reply(file = discord.File("americablend.jpg"))
 
     @commands.command()
     async def india(self, ctx, member: discord.Member):
@@ -66,18 +66,18 @@ class Image(commands.Cog):
         primergerde = merger.resize(pfp.size)
 
         blended = PIL.Image.blend(pfp, merger, 0.25)
-        blended.save('delete//indiablend.jpg')
+        blended.save('indiablend.jpg')
 
-        await ctx.reply(file = discord.File("delete//indiablend.jpg"))
+        await ctx.reply(file = discord.File("indiablend.jpg"))
 
     @commands.command()
     async def sad(self, ctx, member: discord.Member):
         asset = member.display_avatar
         data = BytesIO(await asset.read())
         pfp = PIL.Image.open(data).convert('L')
-        pfp.save('delete//sad.jpg')
+        pfp.save('sad.jpg')
 
-        await ctx.reply(file = discord.File("delete//save.jpg"))
+        await ctx.reply(file = discord.File("save.jpg"))
            
     @commands.command()
     async def ww2(self, ctx, member: discord.Member):
@@ -89,9 +89,9 @@ class Image(commands.Cog):
         merger = merger.resize(pfp.size)
 
         blended = PIL.Image.blend(pfp, merger, 0.5)
-        blended.save('delete//ww2blend.jpg')
+        blended.save('ww2blend.jpg')
 
-        await ctx.reply(file = discord.File("delete//ww2blend.jpg"))
+        await ctx.reply(file = discord.File("ww2blend.jpg"))
 
 
 def setup(bot):
