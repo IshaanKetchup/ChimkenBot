@@ -16,7 +16,7 @@ class Image(commands.Cog):
     
     @commands.command()
     async def sus(self, ctx, member: discord.Member):
-        sus  = PIL.Image.open('sus.jpg')
+        sus  = PIL.Image.open('media//sus.jpg')
         asset = member.display_avatar
 
         data = BytesIO(await asset.read())
@@ -25,9 +25,8 @@ class Image(commands.Cog):
         pfp = pfp.resize((251, 251))
         sus.paste(pfp, (175,100))
 
-        sus.save("sussy.jpg")
-        emb = Embed(description= f'{member.mention} kinda sus', colour= discord.Color.random())
-        await ctx.reply(file = discord.File("sussy.jpg"))
+        sus.save("delete//sussy.jpg")
+        await ctx.send(file = discord.File("delete//sussy.jpg"))
 
     @commands.command()
     async def gay(self, ctx, member: discord.Member):
@@ -35,26 +34,27 @@ class Image(commands.Cog):
         data = BytesIO(await asset.read())
         pfp = PIL.Image.open(data).convert('RGB')
 
-        pride  = PIL.Image.open('pride.jpg').convert('RGB')
+        pride  = PIL.Image.open('media//pride.jpg').convert('RGB')
         pride = pride.resize(pfp.size)
 
-        blended = PIL.Image.blend(pfp, pride, 0.4)
-        blended.save('blended.jpg')
-        await ctx.reply(file = discord.File("blended.jpg"))
-    
+        blended = PIL.Image.blend(pfp, pride, 0.5)
+        blended.save('delete//blended.jpg')
+
+        await ctx.reply(file = discord.File("delete//blended.jpg"))
+
     @commands.command()
     async def usa(self, ctx, member: discord.Member):
         asset = member.display_avatar
         data = BytesIO(await asset.read())
         pfp = PIL.Image.open(data).convert('RGB')
 
-        pride  = PIL.Image.open('america.jpg').convert('RGB')
-        pride = pride.resize(pfp.size)
+        prmergeride  = PIL.Image.open('media//america.jpg').convert('RGB')
+        merger = merger.resize(pfp.size)
 
-        blended = PIL.Image.blend(pfp, pride, 0.25)
-        blended.save('americablend.jpg')
+        blended = PIL.Image.blend(pfp, merger, 0.25)
+        blended.save('delete//americablend.jpg')
 
-        await ctx.reply(file = discord.File("americablend.jpg"))
+        await ctx.reply(file = discord.File("delete//americablend.jpg"))
 
     @commands.command()
     async def india(self, ctx, member: discord.Member):
@@ -62,24 +62,37 @@ class Image(commands.Cog):
         data = BytesIO(await asset.read())
         pfp = PIL.Image.open(data).convert('RGB')
 
-        pride  = PIL.Image.open('india.png').convert('RGB')
-        pride = pride.resize(pfp.size)
+        merger  = PIL.Image.open('media//india.png').convert('RGB')
+        primergerde = merger.resize(pfp.size)
 
-        blended = PIL.Image.blend(pfp, pride, 0.25)
-        blended.save('indiablend.jpg')
+        blended = PIL.Image.blend(pfp, merger, 0.25)
+        blended.save('delete//indiablend.jpg')
 
-        await ctx.reply(file = discord.File("indiablend.jpg"))
+        await ctx.reply(file = discord.File("delete//indiablend.jpg"))
 
     @commands.command()
     async def sad(self, ctx, member: discord.Member):
         asset = member.display_avatar
         data = BytesIO(await asset.read())
         pfp = PIL.Image.open(data).convert('L')
-        pfp.save('save.jpg')
+        pfp.save('delete//sad.jpg')
 
-        await ctx.reply(file = discord.File("save.jpg"))
-        
-        
+        await ctx.reply(file = discord.File("delete//save.jpg"))
+           
+    @commands.command()
+    async def ww2(self, ctx, member: discord.Member):
+        asset = member.display_avatar
+        data = BytesIO(await asset.read())
+        pfp = PIL.Image.open(data).convert('L')
+
+        merger  = PIL.Image.open('media//ww2.jpg').convert('L')
+        merger = merger.resize(pfp.size)
+
+        blended = PIL.Image.blend(pfp, merger, 0.5)
+        blended.save('delete//ww2blend.jpg')
+
+        await ctx.reply(file = discord.File("delete//ww2blend.jpg"))
+
 
 def setup(bot):
     bot.add_cog(Image(bot))
