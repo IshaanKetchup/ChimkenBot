@@ -40,7 +40,7 @@ class Image(commands.Cog):
 
         blended = PIL.Image.blend(pfp, pride, 0.4)
         blended.save('blended.jpg')
-        await ctx.send(file = discord.File("blended.jpg"))
+        await ctx.reply(file = discord.File("blended.jpg"))
 
         
         
