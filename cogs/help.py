@@ -69,7 +69,7 @@ class Help(commands.Cog):
                 elif pg == 2:
                     button.disabled = False
                     button1.disabled = False
-                    emb = emb2
+                    emb = emb5
                 elif pg == 3:
                     button.disabled = False
                     button1.disabled = False
@@ -125,6 +125,16 @@ class Help(commands.Cog):
         emb4.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb4.set_thumbnail(url = self.bot.user.display_avatar)
         
+        emb5 = discord.Embed(title = '**IMAGE COMMANDS**', color = discord.Color.random())
+        emb5.add_field(name = "Sus", value = ">sus @user", inline = True)
+        emb5.add_field(name = "Gay", value = ">gay @user", inline = True)        
+        emb5.add_field(name = "WW2", value = ">ww2 @user", inline = True)
+        emb5.add_field(name = "USA", value = ">usa @user", inline = True)
+        emb5.add_field(name = "India", value = ">india @user", inline = True)
+        emb5.add_field(name = "sad", value = ">sad @user", inline = True)    
+        emb5.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+        emb5.set_thumbnail(url = self.bot.user.display_avatar)
+
     
         HelpView.message = await ctx.send(embed = emb1, view = HelpView(ctx))
             
