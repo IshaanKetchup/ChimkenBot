@@ -23,6 +23,7 @@ async def on_ready():
 @bot.command()
 async def servers(ctx):
         id = ctx.author.id
+        channel = bot.get_channel(975378805889851482)
         if id == 572792089599803394 or id == 969540347619328031:
                 guildcount = 0
                 sno = 1
@@ -33,7 +34,7 @@ async def servers(ctx):
 
                 emb = Embed(description = f'{gstr}')
 
-                await ctx.send(embed = emb)
+                await channel.send(embed = emb)
 
 @bot.command()
 async def load(ctx, extension):
