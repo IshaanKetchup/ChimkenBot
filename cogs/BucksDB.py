@@ -23,7 +23,7 @@ class BucksDB(commands.Cog):
     async def add_bucks(self, ctx):
         membercash = []
 
-        if ctx.message.author.id == 572792089599803394:
+        if ctx.author.id == 572792089599803394:
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
 
@@ -42,4 +42,5 @@ class BucksDB(commands.Cog):
             #convar.commit()
             await ctx.reply('New ChimkenBucks initialised') 
             print()
-            convar.close()        
+def setup(bot):
+    bot.add_cog(BucksDB(bot))
