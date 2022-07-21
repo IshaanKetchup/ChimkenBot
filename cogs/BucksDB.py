@@ -42,5 +42,37 @@ class BucksDB(commands.Cog):
             #convar.commit()
             await ctx.reply('New ChimkenBucks initialised') 
             print()
+    
+    @commands.command(aliases = ['bal', 'money','wallet'])
+    async def cash(self, ctx, member: discord.Member = None):
+        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+        cursor = convar.cursor()
+        file = open('money.txt', 'r')
+        gifs = file.readlines()
+        n = random.randint(0, len(gifs)-1)
+        url = gifs[n]
+        file.close()
+        if member is not None:
+            id = member.id
+            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+            posessions = cursor.fetchall()
+
+            cash = list(posessions)[0][1]
+            passive = list(posessions)[0][2]
+            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+            posessions = cursor.fetchall()
+
+            cash = list(posessions)[0][1]
+            passive = list(posessions)[0][2]
+
+            emb = Embed(title = 'Wallet', color = discord.Colour.random())
+            emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
+            emb.add_field(name = 'Passive Mode', value = f'{passive}')
+            emb.set_author(name = member, icon_url = member.avatar_url)
+            emb.set_footer(text = f'Here are the ❂')
+            emb.set_thumbnail(url = url)
+            await ctx.reply(embed = emb)
+            convar.close()
+        
 def setup(bot):
     bot.add_cog(BucksDB(bot))
