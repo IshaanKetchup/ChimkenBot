@@ -189,11 +189,11 @@ class BucksDB(commands.Cog):
                     emb.set_footer(text = 'xD')
                     await ctx.reply(embed = emb)
             else:
-                emb = Embed(description= 'You can\'t steal from *yourself*!', colour = None)
+                emb = Embed(description= 'You can\'t steal from *yourself*!')
                 emb.set_footer(text = 'Mention someone else to steal from them')
                 await ctx.reply(embed = emb)
         else:
-            emb = Embed(description= 'You can\'t steal from *no one*!', colour = None)
+            emb = Embed(description= 'You can\'t steal from *no one*!')
             emb.set_footer(text = 'Mention someone to steal from them')
             await ctx.reply(embed = emb)
         
