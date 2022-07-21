@@ -122,7 +122,7 @@ class BucksDB(commands.Cog):
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 1800, type=commands.BucketType.user)
-    async def steal(self,ctx, member : discord.Member):
+    async def steal(self,ctx, member : discord.Member = None):
         if member is not None:
             id = member.id
             robber = ctx.author.id
