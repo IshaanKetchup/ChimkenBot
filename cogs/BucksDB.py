@@ -34,12 +34,10 @@ class BucksDB(commands.Cog):
             membercash = list(set(membercash))
             await ctx.send('hello')
             
-            for i in membercash:
-                #await ctx.send(i)
+            for i in membercash:        
                 cursor.execute("INSERT INTO records VALUES {}".format(i))
                 
             await ctx.send('Inserted')
-            #convar.commit()
             await ctx.reply('New ChimkenBucks initialised') 
             print()
     
@@ -95,6 +93,31 @@ class BucksDB(commands.Cog):
             emb.set_thumbnail(url = url)
             await ctx.reply(embed = emb)
             convar.close()
+    
+    @commands.command(aliases = ['earn', 'job'])
+    @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
+    async def work(self,ctx):
+        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+        cursor = convar.cursor()
+        weight = random.randint(1,100)
+        if weight >= 1 and weight <=80:
+            cash = random.randint(1,50)
+        else:
+            cash = random.randint(50, 100)
+            
+        emb = Embed(description = f'You earned {cash}❂!', colour = discord.Color.random())
+        emb.set_footer(text = 'cha-ching!')
+        emb.set_author(name = ctx.message.author, icon_url = ctx.author.avatar)
+
+        await ctx.reply(embed = emb)
+        id = ctx.author.id
+        
+        cursor.execute("""UPDATE records
+                                SET ChimkenBucks = ChimkenBucks+{}
+                                WHERE User_ID = {}""".format(cash, id))
+        convar.commit()
+        convar.close()
+    
 
         
 def setup(bot):
