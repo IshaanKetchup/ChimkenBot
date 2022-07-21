@@ -50,10 +50,17 @@ class Help(commands.Cog):
                     button.disabled = False
                     button2.disabled = False
                     emb = emb3
+
                 elif pg == 4:
                     button.disabled = False
-                    button2.disabled = True
+                    button2.disabled = False
                     emb = emb4
+
+                elif pg == 5:
+                    button.disabled = False
+                    button2.disabled = True
+                    emb = emb5
+
                 await interaction.response.edit_message(embed = emb, view = self)
             
             @discord.ui.button(label=">>", style=discord.ButtonStyle.primary, row = 0, custom_id= 'right') 
@@ -74,10 +81,16 @@ class Help(commands.Cog):
                     button.disabled = False
                     button1.disabled = False
                     emb = emb3
+
                 elif pg == 4:
-                    button.disabled = True
+                    button.disabled = False
                     button1.disabled = False
                     emb = emb4
+
+                elif pg == 5:
+                    button.disabled = True
+                    button1.disabled = False
+                    emb = emb5
                 await interaction.response.edit_message(embed = emb, view = self)
                 
             async def on_timeout(self):
@@ -124,18 +137,19 @@ class Help(commands.Cog):
         emb4.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb4.set_thumbnail(url = self.bot.user.display_avatar)
         
-        emb5 = discord.Embed(title = '**IMAGE COMMANDS**', color = discord.Color.random())
+        emb5 = discord.Embed(title = '**OTHER COMMANDS**', color = discord.Color.random())
         emb5.add_field(name = "Sus", value = ">sus @user", inline = True)
         emb5.add_field(name = "Gay", value = ">gay @user", inline = True)        
         emb5.add_field(name = "WW2", value = ">ww2 @user", inline = True)
         emb5.add_field(name = "USA", value = ">usa @user", inline = True)
         emb5.add_field(name = "India", value = ">india @user", inline = True)
-        emb5.add_field(name = "sad", value = ">sad @user", inline = True)    
+        emb5.add_field(name = "sad", value = ">sad @user", inline = True)
         emb5.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb5.set_thumbnail(url = self.bot.user.display_avatar)
 
-    
-        HelpView.message = await ctx.send(embed = emb1, view = HelpView(ctx))
+        await ctx.send(embed = emb1, view = HelpView(ctx))
+        
+
             
 
 
