@@ -68,11 +68,33 @@ class BucksDB(commands.Cog):
             emb = Embed(title = 'Wallet', color = discord.Colour.random())
             emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
             emb.add_field(name = 'Passive Mode', value = f'{passive}')
-            emb.set_author(name = member, icon_url = member.avatar_url)
+            emb.set_author(name = member, icon_url = ctx.author.avatar)
             emb.set_footer(text = f'Here are the ❂')
             emb.set_thumbnail(url = url)
             await ctx.reply(embed = emb)
             convar.close()
+        else:
+            id = ctx.author.id
+            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+            posessions = cursor.fetchall()
+
+            cash = list(posessions)[0][1]
+            passive = list(posessions)[0][2]
+            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+            posessions = cursor.fetchall()
+
+            cash = list(posessions)[0][1]
+            passive = list(posessions)[0][2]
+
+            emb = Embed(title = 'Wallet', color = discord.Colour.random())
+            emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
+            emb.add_field(name = 'Passive Mode', value = f'{passive}')
+            emb.set_author(name = member, icon_url = ctx.author.avatar)
+            emb.set_footer(text = f'Here are the ❂')
+            emb.set_thumbnail(url = url)
+            await ctx.reply(embed = emb)
+            convar.close()
+
         
 def setup(bot):
     bot.add_cog(BucksDB(bot))
