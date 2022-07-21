@@ -196,6 +196,113 @@ class BucksDB(commands.Cog):
             emb = Embed(description= 'You can\'t steal from *no one*!')
             emb.set_footer(text = 'Mention someone to steal from them')
             await ctx.reply(embed = emb)
+
+    @commands.command()
+    @commands.cooldown(rate = 1, per = 86400, type=commands.BucketType.user)
+    async def passive(self, ctx, message):
+        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+        cursor = convar.cursor()
+        id = ctx.author.id
         
+        if message.lower() == 'true':
+           
+            cursor.execute("SELECT * FROM records where User_ID = {}".format(id))
+            data = cursor.fetchall()
+            if data[0][2] == 'True':
+                emb = Embed(description = 'You are already in `Passive Mode`.', colour = discord.Color.random())
+                await ctx.reply(embed = emb)
+
+            else:
+                emb = Embed(description = 'You are now in `Passive Mode`.')
+                await ctx.reply(embed = emb)
+
+                cursor.execute('''UPDATE records 
+                                SET passive = 'True' 
+                                WHERE User_ID ={}'''.format(id))
+                convar.commit()
+                convar.close()
+
+
+        elif message.lower() == 'false':
+            cursor.execute("SELECT * FROM records where User_ID = {}".format(id))
+            data = cursor.fetchall()
+
+            if data[0][2] =='False':
+                emb = Embed(description = 'You are currently not in `Passive Mode`.', colour = discord.Color.random())
+                await ctx.reply(embed = emb)
+            else:
+                emb = Embed(description = 'You have left `Passive Mode`.')
+                await ctx.reply(embed = emb)
+
+                cursor.execute('''UPDATE records 
+                                SET passive = 'False' 
+                                WHERE User_ID ={}'''.format(id))
+                convar.commit()
+                convar.close()
+        else:
+            emb = Embed(title = 'I DONT UNDERSTAND WYM???')
+            await ctx.reply(embed = emb)
+
+    @commands.command()
+    @commands.cooldown(rate = 1, per = 1800, type=commands.BucketType.user)
+    async def give(self,ctx, member : discord.Member, message = None):
+
+        amount = int(message)
+
+        class Confirmation(discord.ui.View):
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await self.message.edit(view = self)
+
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
+            
+            @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes', disabled = True)
+            async def button1_callback(self, button, interaction):
+                button2 = [x for x in self.children if x.custom_id == 'No']
+                receiver = member.id
+                giver = ctx.author.id
+                amount = int(message)
+
+                convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                cursor = convar.cursor()
+                
+                cursor.execute("""UPDATE records
+                                SET ChimkenBucks = ChimkenBucks+{}
+                                WHERE User_ID = {}""".format(amount, receiver))
+                
+                cursor.execute("""UPDATE records
+                                SET ChimkenBucks = ChimkenBucks-{}
+                                WHERE User_ID = {}""".format(amount, giver))
+                convar.commit()
+                emb2 = Embed(description = f'{member.mention} has been given {amount}❂ by {ctx.author.mention}!')
+                await interaction.response.edit_message(embed = emb2, view = self)
+                button.disabled = True
+                button2.disabled = True
+
+            @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No', disabled = True)
+            async def button2_callback(self, button, interaction):
+                button1 = [x for x in self.children if x.custom_id == 'Yes']
+
+                emb2 = Embed(description = f'Okay, transaction cancelled. ')
+                await interaction.response.edit_message(embed = emb2, view = self)
+                button1.disabled = True
+                button.disabled = True
+
+        emb = Embed(title = 'How noble!', description = f'You are about to give {amount}❂ to {member.mention}. Are you sure?')
+
+        await ctx.send(embed = emb, view = Confirmation(ctx))
+
 def setup(bot):
     bot.add_cog(BucksDB(bot))
