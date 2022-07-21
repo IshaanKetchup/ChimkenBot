@@ -74,6 +74,7 @@ class BucksDB(commands.Cog):
             await ctx.reply(embed = emb)
             convar.close()
         else:
+            member = ctx.author
             id = ctx.author.id
             cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
             posessions = cursor.fetchall()
