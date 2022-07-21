@@ -1,3 +1,4 @@
+from socket import timeout
 from discord.ext import commands
 import discord
 from discord import Embed
@@ -76,7 +77,7 @@ class Help(commands.Cog):
                 elif pg == 2:
                     button.disabled = False
                     button1.disabled = False
-                    emb = emb5
+                    emb = emb2
                 elif pg == 3:
                     button.disabled = False
                     button1.disabled = False
@@ -96,7 +97,7 @@ class Help(commands.Cog):
             async def on_timeout(self):
                 for child in self.children:
                     child.disabled = True
-                await self.message.edit(view = self)
+                await message.edit(view = self)
                         
         emb1 = discord.Embed(title = '**REDDIT COMMANDS**', color = discord.Color.random())
         emb1.add_field(name = "Memes", value = '>meme', inline= True)
@@ -115,7 +116,7 @@ class Help(commands.Cog):
         emb2 = discord.Embed(title = "**Currency Commands**", color = discord.Color.random())
         emb2.add_field(name = 'Work', value = '>work')
         emb2.add_field(name = 'Steal', value = '>steal @user')
-        emb2.add_field(name = 'Gamble', value = '>gamble (amount)')
+        #emb2.add_field(name = 'Gamble', value = '>gamble (amount)')
         emb2.add_field(name = 'Passive Mode', value = '>passive (true/false)')
         #emb2.add_field(name = 'Daily', value = '>daily')
         #emb2.add_field(name = 'Monthly', value = '>monthly')
@@ -128,26 +129,26 @@ class Help(commands.Cog):
         emb3.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb3.set_thumbnail(url = self.bot.user.display_avatar)
 
-        emb4 = discord.Embed(title = '**OTHER COMMANDS**', color = discord.Color.random())
-        emb4.add_field(name = "Jokes", value = ">funny", inline= True)        
-        emb4.add_field(name = "News", value ='>news', inline = True)
-        emb4.add_field(name = "Google search", value = ">search (search query)", inline= True)
-        emb4.add_field(name = "Hello", value = '>hello', inline= True)
-        emb4.add_field(name = "Rick", value = '>rick', inline= True)
+        emb4 = discord.Embed(title = '**IMAGE COMMANDS**', color = discord.Color.random())
+        emb4.add_field(name = "Sus", value = ">sus @user", inline = True)
+        emb4.add_field(name = "Gay", value = ">gay @user", inline = True)        
+        emb4.add_field(name = "WW2", value = ">ww2 @user", inline = True)
+        emb4.add_field(name = "USA", value = ">usa @user", inline = True)
+        emb4.add_field(name = "India", value = ">india @user", inline = True)
+        emb4.add_field(name = "sad", value = ">sad @user", inline = True)
         emb4.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb4.set_thumbnail(url = self.bot.user.display_avatar)
-        
+
         emb5 = discord.Embed(title = '**OTHER COMMANDS**', color = discord.Color.random())
-        emb5.add_field(name = "Sus", value = ">sus @user", inline = True)
-        emb5.add_field(name = "Gay", value = ">gay @user", inline = True)        
-        emb5.add_field(name = "WW2", value = ">ww2 @user", inline = True)
-        emb5.add_field(name = "USA", value = ">usa @user", inline = True)
-        emb5.add_field(name = "India", value = ">india @user", inline = True)
-        emb5.add_field(name = "sad", value = ">sad @user", inline = True)
+        emb5.add_field(name = "Jokes", value = ">funny", inline= True)        
+        emb5.add_field(name = "News", value ='>news', inline = True)
+        emb5.add_field(name = "Google search", value = ">search (search query)", inline= True)
+        emb5.add_field(name = "Hello", value = '>hello', inline= True)
+        emb5.add_field(name = "Rick", value = '>rick', inline= True)
         emb5.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb5.set_thumbnail(url = self.bot.user.display_avatar)
-
-        await ctx.send(embed = emb1, view = HelpView(ctx))
+        
+        message = await ctx.send(embed = emb1, view = HelpView(ctx))
         
 
             
