@@ -296,8 +296,7 @@ class BucksDB(commands.Cog):
 
                 emb2 = Embed(description = f'Okay, transaction cancelled. ')
                 await interaction.response.edit_message(embed = emb2, view = self)
-                button1.disabled = True
-                button.disabled = True
+                
 
         emb = Embed(title = 'How noble!', description = f'You are about to give {amount}❂ to {member.mention}. Are you sure?')
 
