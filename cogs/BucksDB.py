@@ -4,7 +4,6 @@ import discord
 import random
 from discord import Embed
 import psycopg2
-from discord_components import DiscordComponents, ComponentsBot, Button, SelectOption, Select, Interaction
 import os
 import math
 
