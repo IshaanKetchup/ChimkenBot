@@ -3,7 +3,6 @@ asyncpraw
 asyncio
 beautifulsoup4
 lxml
-discord-components
 psycopg2
 asyncpg
 pillow
