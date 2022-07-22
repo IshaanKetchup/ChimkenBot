@@ -267,7 +267,7 @@ class BucksDB(commands.Cog):
                 else:
                     return True
             
-            @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes', disabled = True)
+            @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes')
             async def button1_callback(self, button, interaction):
                 button2 = [x for x in self.children if x.custom_id == 'No']
                 receiver = member.id
@@ -290,7 +290,7 @@ class BucksDB(commands.Cog):
                 button.disabled = True
                 button2.disabled = True
 
-            @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No', disabled = True)
+            @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
             async def button2_callback(self, button, interaction):
                 button1 = [x for x in self.children if x.custom_id == 'Yes']
 
