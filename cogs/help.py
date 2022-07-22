@@ -148,7 +148,7 @@ class Help(commands.Cog):
         emb5.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb5.set_thumbnail(url = self.bot.user.display_avatar)
         
-        message = await ctx.send(embed = emb1)#, view = HelpView(ctx))
+        message = await ctx.send(embed = emb1, view = HelpView(ctx))
         
 
             
