@@ -403,7 +403,9 @@ class BucksDB(commands.Cog):
             rank = 1
             for i in recs:
                 name = self.bot.get_user(i[0])
-                userstr += f'{rank}. `❂{i[1]}` - {name} \n'
+                cash = i[1]
+                value = '{:,}'.format(cash)
+                userstr += f'{rank}. `❂{cash}` - {name} \n'
                 rank += 1
 
             emb = Embed(title = '**Global Leaderboards**', description= userstr, colour = 0xFFD700)
@@ -412,6 +414,7 @@ class BucksDB(commands.Cog):
             emb.set_footer(text = 'OMG Legends')
             await ctx.send(embed = emb)
             convar.close()
+
 
 
 
