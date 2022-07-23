@@ -1,7 +1,6 @@
 from socket import timeout
 from discord.ext import commands
 import discord
-#from discord import Embed
 import random
 
 class Help(commands.Cog):
@@ -93,7 +92,64 @@ class Help(commands.Cog):
                     button1.disabled = False
                     emb = emb5
                 await interaction.response.edit_message(embed = emb, view = self)
-                
+            
+            @discord.ui.select(
+                placeholder= "Pages",
+                min_values= 1,
+                max_values=  1,
+                options = [
+                    discord.SelectOption(
+                        label = '1', 
+                        description = 'REDDIT COMMANDS',
+                        
+                    ),
+                    discord.SelectOption(
+                        label = '2',
+                        description = 'CURRENCY COMMANDS',
+                        
+                    ),
+                    discord.SelectOption(
+                        label = '3',
+                        description = 'SASS COMMANDS',
+                        
+                    ),
+                    discord.SelectOption(
+                        label = '4',
+                        description = 'IMAGE COMMANDS',
+                        
+                    ),
+                    discord.SelectOption(
+                        label = '5',
+                        description = 'OTHER COMMANDS',
+                        
+                    )
+                ]
+            )
+            async def select_callback(self, select, interaction):
+                button1 = [x for x in self.children if x.custom_id == 'left'][0]
+                button2 = [x for x in self.children if x.custom_id == 'right'][0]
+                if select.values[0] == '1':
+                    emb = emb1
+                    button1.disabled = True
+                    button2.disabled = False
+                elif select.values[0] == '2':
+                    emb = emb2
+                    button1.disabled = False
+                    button2.disabled = False
+                elif select.values[0] == '3':
+                    emb = emb3
+                    button1.disabled = False
+                    button2.disabled = False
+                elif select.values[0] == '4':
+                    emb = emb4
+                    button1.disabled = False
+                    button2.disabled = False
+                elif select.values[0] == '5':
+                    emb = emb5
+                    button1.disabled = False
+                    button2.disabled = True
+                await interaction.response.edit_message(embed = emb, view = self)
+
             async def on_timeout(self):
                 for child in self.children:
                     child.disabled = True
