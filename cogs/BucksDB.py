@@ -57,21 +57,22 @@ class BucksDB(commands.Cog):
 
     @commands.command()
     async def viewall(self, ctx):
-        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-        cursor = convar.cursor()
+        id = ctx.author.id
+        channel = self.bot.get_channel(975378805889851482)
+        if id == 572792089599803394 or id == 969540347619328031:
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
 
-        cursor.execute("select * from records")        
-        x = cursor.fetchall()
-        userstr = ''
-        for i in x:
-            name = self.bot.get_user(i[0])
-            userstr += f'{name} -- {i[1]} -- {i[2]} \n'
+            cursor.execute("select * from records")        
+            x = cursor.fetchall()
+            userstr = ''
+            for i in x:
+                name = self.bot.get_user(i[0])
+                userstr += f'{name} -- {i[1]} -- {i[2]} \n'
 
-        emb = Embed(description= userstr)
-        await ctx.send(embed = emb)
-        convar.close()
-
-
+            emb = Embed(description= userstr)
+            await ctx.send(embed = emb)
+            convar.close()
 
        
 
@@ -94,44 +95,21 @@ class BucksDB(commands.Cog):
             convar.commit()
             convar.close()
             emb = Embed(description = 'Welcome to ChimkenBucks! Your record has been initialised.')
-            await ctx.send(embed = emb)
+            await ctx.reply(embed = emb)
     
     @commands.command(aliases = ['bal', 'money','wallet'])
     async def cash(self, ctx, member: discord.Member = None):
         users = self.users
-        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-        cursor = convar.cursor()
-        file = open('money.txt', 'r')
-        gifs = file.readlines()
-        n = random.randint(0, len(gifs)-1)
-        url = gifs[n]
-        file.close()
-        if member is not None:
-            id = member.id
-            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
-            posessions = cursor.fetchall()
-
-            cash = list(posessions)[0][1]
-            passive = list(posessions)[0][2]
-            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
-            posessions = cursor.fetchall()
-
-            cash = list(posessions)[0][1]
-            passive = list(posessions)[0][2]
-
-            emb = Embed(title = 'Wallet', color = discord.Colour.random())
-            emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
-            emb.add_field(name = 'Passive Mode', value = f'{passive}')
-            emb.set_author(name = member, icon_url = ctx.author.avatar)
-            emb.set_footer(text = f'Here are the ❂')
-            emb.set_thumbnail(url = url)
-            await ctx.reply(embed = emb)
-            convar.close()
-        else:
-            member = ctx.author
-            id = ctx.author.id
-            if member.id in users:
-                
+        if ctx.author.id in users:
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+            file = open('money.txt', 'r')
+            gifs = file.readlines()
+            n = random.randint(0, len(gifs)-1)
+            url = gifs[n]
+            file.close()
+            if member is not None:
+                id = member.id
                 cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
                 posessions = cursor.fetchall()
 
@@ -152,220 +130,280 @@ class BucksDB(commands.Cog):
                 await ctx.reply(embed = emb)
                 convar.close()
             else:
-                emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-                await ctx.send(embed = emb)
+                member = ctx.author
+                id = ctx.author.id
+                
+                    
+                cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+                posessions = cursor.fetchall()
+
+                cash = list(posessions)[0][1]
+                passive = list(posessions)[0][2]
+                cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+                posessions = cursor.fetchall()
+
+                cash = list(posessions)[0][1]
+                passive = list(posessions)[0][2]
+
+                emb = Embed(title = 'Wallet', color = discord.Colour.random())
+                emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
+                emb.add_field(name = 'Passive Mode', value = f'{passive}')
+                emb.set_author(name = member, icon_url = ctx.author.avatar)
+                emb.set_footer(text = f'Here are the ❂')
+                emb.set_thumbnail(url = url)
+                await ctx.reply(embed = emb)
+                convar.close()
+        else:
+            emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
+            await ctx.reply(embed = emb)
 
     
     @commands.command(aliases = ['earn', 'job'])
     @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
     async def work(self,ctx):
-        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-        cursor = convar.cursor()
-        weight = random.randint(1,100)
-        if weight >= 1 and weight <=80:
-            cash = random.randint(1,50)
-        else:
-            cash = random.randint(50, 100)
-            
-        emb = Embed(description = f'You earned {cash}❂!', colour = discord.Color.random())
-        emb.set_footer(text = 'cha-ching!')
-        emb.set_author(name = ctx.message.author, icon_url = ctx.author.avatar)
+        users = self.users
+        if ctx.author.id in users:
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+            weight = random.randint(1,100)
+            if weight >= 1 and weight <=80:
+                cash = random.randint(1,50)
+            else:
+                cash = random.randint(50, 100)
+                
+            emb = Embed(description = f'You earned {cash}❂!', colour = discord.Color.random())
+            emb.set_footer(text = 'cha-ching!')
+            emb.set_author(name = ctx.message.author, icon_url = ctx.author.avatar)
 
-        await ctx.reply(embed = emb)
-        id = ctx.author.id
-        
-        cursor.execute("""UPDATE records
-                                SET ChimkenBucks = ChimkenBucks+{}
-                                WHERE User_ID = {}""".format(cash, id))
-        convar.commit()
-        convar.close()
+            await ctx.reply(embed = emb)
+            id = ctx.author.id
+            
+            cursor.execute("""UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks+{}
+                                    WHERE User_ID = {}""".format(cash, id))
+            convar.commit()
+            convar.close()
+        else:
+            emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
+            await ctx.reply(embed = emb)
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 1800, type=commands.BucketType.user)
     async def steal(self,ctx, member : discord.Member = None):
-        if member is not None:
-            id = member.id
-            robber = ctx.author.id
+        users = self.users
 
-            if id != robber:
+        if ctx.author.id in users:
+            if member is not None:
+                id = member.id
+                robber = ctx.author.id
 
-                convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-                cursor = convar.cursor()
+                if id != robber:
 
-                cursor.execute('SELECT * FROM records WHERE User_ID = {}'.format(robber))
-                robber_data = cursor.fetchall()
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
 
-                robber_passive = robber_data[0][2]
+                    cursor.execute('SELECT * FROM records WHERE User_ID = {}'.format(robber))
+                    robber_data = cursor.fetchall()
 
-                if robber_passive == 'False':
+                    robber_passive = robber_data[0][2]
 
-                    if id != robber:
-                        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-                        cursor = convar.cursor()
-                        
-                        cursor.execute('SELECT * FROM records WHERE User_ID = {}'.format(id))
-                        data = cursor.fetchall()
+                    if robber_passive == 'False':
 
-                        passive = data[0][2]
-                        cash = data[0][1]
-
-                        if passive == 'False':
-                            if cash>100:
-                                weight = random.randint(1,100)
-                                if weight >= 1 and weight <=80:
-                                    steal = random.randint(1,(cash//8))
-                                else:
-                                    steal = random.randint(1, (cash//4))
-                                
-                                emb = Embed(description = f'{ctx.author.mention} stole {steal}❂ from {member.mention} 😱🤑 ')
-                                emb.set_footer(text = '💲🤑')
-                                await ctx.reply(embed = emb)
+                        if id != robber:
+                            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                            cursor = convar.cursor()
                             
-                                cursor.execute("""UPDATE records
-                                                SET ChimkenBucks = ChimkenBucks-{}
-                                                WHERE User_ID = {}""".format(steal, id))
-                                convar.commit()
+                            cursor.execute('SELECT * FROM records WHERE User_ID = {}'.format(id))
+                            data = cursor.fetchall()
 
-                                cursor.execute("""UPDATE records
-                                                SET ChimkenBucks = ChimkenBucks+{}
-                                                WHERE User_ID = {}""".format(steal, robber))
-                                convar.commit() 
-                                convar.close()
+                            passive = data[0][2]
+                            cash = data[0][1]
 
+                            if passive == 'False':
+                                if cash>100:
+                                    weight = random.randint(1,100)
+                                    if weight >= 1 and weight <=80:
+                                        steal = random.randint(1,(cash//8))
+                                    else:
+                                        steal = random.randint(1, (cash//4))
+                                    
+                                    emb = Embed(description = f'{ctx.author.mention} stole {steal}❂ from {member.mention} 😱🤑 ')
+                                    emb.set_footer(text = '💲🤑')
+                                    await ctx.reply(embed = emb)
+                                
+                                    cursor.execute("""UPDATE records
+                                                    SET ChimkenBucks = ChimkenBucks-{}
+                                                    WHERE User_ID = {}""".format(steal, id))
+                                    convar.commit()
+
+                                    cursor.execute("""UPDATE records
+                                                    SET ChimkenBucks = ChimkenBucks+{}
+                                                    WHERE User_ID = {}""".format(steal, robber))
+                                    convar.commit() 
+                                    convar.close()
+
+                                else:
+                                    emb = Embed(description =  f'Give {member.mention} a break. They have only {cash}❂', colour = discord.Colour.random())
+                                    emb.set_footer(text = 'lmao')
+                                    await ctx.reply(embed = emb)
                             else:
-                                emb = Embed(description =  f'Give {member.mention} a break. They have only {cash}❂', colour = discord.Colour.random())
+                                emb = Embed(title  = '**BEWARE, THEIF**', description = f'{member.mention} is in  `Passive Mode`. You cannot steal from them ',colour = discord.Colour.random())
                                 emb.set_footer(text = 'lmao')
                                 await ctx.reply(embed = emb)
                         else:
-                            emb = Embed(title  = '**BEWARE, THEIF**', description = f'{member.mention} is in  `Passive Mode`. You cannot steal from them ',colour = discord.Colour.random())
-                            emb.set_footer(text = 'lmao')
+                            emb = Embed(description = "You can't steal from yourself, silly" )
+                            emb.set_footer(text = 'xD')
                             await ctx.reply(embed = emb)
                     else:
-                        emb = Embed(description = "You can't steal from yourself, silly" )
+                        emb = Embed(description = f"You are in `Passive Mode`, silly! You can't steal from {member.mention}", colour = discord.Colour.random())
                         emb.set_footer(text = 'xD')
                         await ctx.reply(embed = emb)
                 else:
-                    emb = Embed(description = f"You are in `Passive Mode`, silly! You can't steal from {member.mention}", colour = discord.Colour.random())
-                    emb.set_footer(text = 'xD')
+                    emb = Embed(description= 'You can\'t steal from *yourself*!')
+                    emb.set_footer(text = 'Mention someone else to steal from them')
                     await ctx.reply(embed = emb)
             else:
-                emb = Embed(description= 'You can\'t steal from *yourself*!')
-                emb.set_footer(text = 'Mention someone else to steal from them')
+                emb = Embed(description= 'You can\'t steal from *no one*!')
+                emb.set_footer(text = 'Mention someone to steal from them')
                 await ctx.reply(embed = emb)
         else:
-            emb = Embed(description= 'You can\'t steal from *no one*!')
-            emb.set_footer(text = 'Mention someone to steal from them')
+            emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
             await ctx.reply(embed = emb)
+
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 86400, type=commands.BucketType.user)
     async def passive(self, ctx, message):
-        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-        cursor = convar.cursor()
-        id = ctx.author.id
-        
-        if message.lower() == 'true':
-           
-            cursor.execute("SELECT * FROM records where User_ID = {}".format(id))
-            data = cursor.fetchall()
-            if data[0][2] == 'True':
-                emb = Embed(description = 'You are already in `Passive Mode`.', colour = discord.Color.random())
-                await ctx.reply(embed = emb)
+        users = self.users
+        if ctx.author.id in users:
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+            id = ctx.author.id
+            
+            if message.lower() == 'true':
+            
+                cursor.execute("SELECT * FROM records where User_ID = {}".format(id))
+                data = cursor.fetchall()
+                if data[0][2] == 'True':
+                    emb = Embed(description = 'You are already in `Passive Mode`.', colour = discord.Color.random())
+                    await ctx.reply(embed = emb)
 
+                else:
+                    emb = Embed(description = 'You are now in `Passive Mode`.')
+                    await ctx.reply(embed = emb)
+
+                    cursor.execute('''UPDATE records 
+                                    SET passive = 'True' 
+                                    WHERE User_ID ={}'''.format(id))
+                    convar.commit()
+                    convar.close()
+
+
+            elif message.lower() == 'false':
+                cursor.execute("SELECT * FROM records where User_ID = {}".format(id))
+                data = cursor.fetchall()
+
+                if data[0][2] =='False':
+                    emb = Embed(description = 'You are currently not in `Passive Mode`.', colour = discord.Color.random())
+                    await ctx.reply(embed = emb)
+                else:
+                    emb = Embed(description = 'You have left `Passive Mode`.')
+                    await ctx.reply(embed = emb)
+
+                    cursor.execute('''UPDATE records 
+                                    SET passive = 'False' 
+                                    WHERE User_ID ={}'''.format(id))
+                    convar.commit()
+                    convar.close()
             else:
-                emb = Embed(description = 'You are now in `Passive Mode`.')
+                emb = Embed(title = 'I DONT UNDERSTAND WYM???')
                 await ctx.reply(embed = emb)
-
-                cursor.execute('''UPDATE records 
-                                SET passive = 'True' 
-                                WHERE User_ID ={}'''.format(id))
-                convar.commit()
-                convar.close()
-
-
-        elif message.lower() == 'false':
-            cursor.execute("SELECT * FROM records where User_ID = {}".format(id))
-            data = cursor.fetchall()
-
-            if data[0][2] =='False':
-                emb = Embed(description = 'You are currently not in `Passive Mode`.', colour = discord.Color.random())
-                await ctx.reply(embed = emb)
-            else:
-                emb = Embed(description = 'You have left `Passive Mode`.')
-                await ctx.reply(embed = emb)
-
-                cursor.execute('''UPDATE records 
-                                SET passive = 'False' 
-                                WHERE User_ID ={}'''.format(id))
-                convar.commit()
-                convar.close()
         else:
-            emb = Embed(title = 'I DONT UNDERSTAND WYM???')
+            emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
             await ctx.reply(embed = emb)
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
     async def give(self,ctx, member : discord.Member, message = None):
+        users = self.users
+        if ctx.author.id in users:
+            amount = int(message)
 
-        amount = int(message)
+            class Confirmation(discord.ui.View):
 
-        class Confirmation(discord.ui.View):
+                def __init__(self, ctx):
+                    super().__init__(timeout = 10)
+                    self.ctx = ctx
+                    
+                async def on_timeout(self):
+                    for child in self.children:
+                        child.disabled = True
+                    await self.message.edit(view = self)
 
-            def __init__(self, ctx):
-                super().__init__(timeout = 10)
-                self.ctx = ctx
+                async def interaction_check(self, interaction):
+                    if interaction.user != self.ctx.author:
+                        embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                        await interaction.response.send_message(embed = embED, ephemeral= True)
+                        return False
+                    else:
+                        return True
                 
-            async def on_timeout(self):
-                for child in self.children:
-                    child.disabled = True
-                await self.message.edit(view = self)
+                @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes')
+                async def button1_callback(self, button, interaction):
+                    button2 = [x for x in self.children if x.custom_id == 'No']
+                    receiver = member.id
+                    giver = ctx.author.id
+                    amount = int(message)
 
-            async def interaction_check(self, interaction):
-                if interaction.user != self.ctx.author:
-                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
-                    await interaction.response.send_message(embed = embED, ephemeral= True)
-                    return False
-                else:
-                    return True
-            
-            @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes')
-            async def button1_callback(self, button, interaction):
-                button2 = [x for x in self.children if x.custom_id == 'No']
-                receiver = member.id
-                giver = ctx.author.id
-                amount = int(message)
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
+                    
+                    cursor.execute("""UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks+{}
+                                    WHERE User_ID = {}""".format(amount, receiver))
+                    
+                    cursor.execute("""UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks-{}
+                                    WHERE User_ID = {}""".format(amount, giver))
+                    convar.commit()
+                    emb2 = Embed(description = f'{member.mention} has been given {amount}❂ by {ctx.author.mention}!')
+                    await interaction.response.edit_message(embed = emb2, view = self)
 
-                convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-                cursor = convar.cursor()
-                
-                cursor.execute("""UPDATE records
-                                SET ChimkenBucks = ChimkenBucks+{}
-                                WHERE User_ID = {}""".format(amount, receiver))
-                
-                cursor.execute("""UPDATE records
-                                SET ChimkenBucks = ChimkenBucks-{}
-                                WHERE User_ID = {}""".format(amount, giver))
-                convar.commit()
-                emb2 = Embed(description = f'{member.mention} has been given {amount}❂ by {ctx.author.mention}!')
-                await interaction.response.edit_message(embed = emb2, view = self)
+                @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
+                async def button2_callback(self, button, interaction):
+                    button1 = [x for x in self.children if x.custom_id == 'Yes']
 
-            @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
-            async def button2_callback(self, button, interaction):
-                button1 = [x for x in self.children if x.custom_id == 'Yes']
+                    emb2 = Embed(description = f'Okay, transaction cancelled. ')
+                    await interaction.response.edit_message(embed = emb2, view = self)
 
-                emb2 = Embed(description = f'Okay, transaction cancelled. ')
-                await interaction.response.edit_message(embed = emb2, view = self)
+            emb = Embed(title = 'How noble!', description = f'You are about to give {amount}❂ to {member.mention}. Are you sure?')
 
-        emb = Embed(title = 'How noble!', description = f'You are about to give {amount}❂ to {member.mention}. Are you sure?')
-
-        await ctx.send(embed = emb, view = Confirmation(ctx))
+            await ctx.reply(embed = emb, view = Confirmation(ctx))
+    
+        else:
+            emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
+            await ctx.reply(embed = emb)
 
     @commands.command()
     async def leaderboards(self, ctx):
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
 
-            cursor.execute()
+            cursor.execute("""SELECT * FROM records Order by ChimkenBucks desc LIMIT 10""")
+            recs = cursor.fetchall()
+            userstr = ''
+            rank = 1
+            for i in recs:
+                name = self.bot.get_user(i[0])
+                userstr += f'{rank}. {name} -- {i[1]}❂ \n'
+
+            emb = Embed(title = '**Leaderboards**', description= userstr, colour = 0xFFD700)
+            emb.set_thumbnail(url = self.bot.user.display_avatar)
+            emb.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+            emb.set_footer(text = 'OMG Legends')
+            await ctx.send(embed = emb)
+            convar.close()
+
 
 
 
