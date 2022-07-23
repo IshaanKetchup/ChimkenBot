@@ -405,7 +405,7 @@ class BucksDB(commands.Cog):
                 name = self.bot.get_user(i[0])
                 cash = i[1]
                 value = '{:,}'.format(cash)
-                userstr += f'{rank}. `❂{cash}` - {name} \n'
+                userstr += f'{rank}. `❂{value}` - {name} \n'
                 rank += 1
 
             emb = Embed(title = '**Global Leaderboards**', description= userstr, colour = 0xFFD700)
