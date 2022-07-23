@@ -122,7 +122,7 @@ class BucksDB(commands.Cog):
                 passive = list(posessions)[0][2]
 
                 emb = Embed(title = 'Wallet', color = discord.Colour.random())
-                emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
+                emb.add_field(name = 'ChimkenBucks', value = f'❂{cash}')
                 emb.add_field(name = 'Passive Mode', value = f'{passive}')
                 emb.set_author(name = member, icon_url = ctx.author.avatar)
                 emb.set_footer(text = f'Here are the ❂')
@@ -146,7 +146,7 @@ class BucksDB(commands.Cog):
                 passive = list(posessions)[0][2]
 
                 emb = Embed(title = 'Wallet', color = discord.Colour.random())
-                emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
+                emb.add_field(name = 'ChimkenBucks', value = f'❂{cash}')
                 emb.add_field(name = 'Passive Mode', value = f'{passive}')
                 emb.set_author(name = member, icon_url = ctx.author.avatar)
                 emb.set_footer(text = f'Here are the ❂')
@@ -171,7 +171,7 @@ class BucksDB(commands.Cog):
             else:
                 cash = random.randint(50, 100)
                 
-            emb = Embed(description = f'You earned {cash}❂!', colour = discord.Color.random())
+            emb = Embed(description = f'You earned ❂{cash}!', colour = discord.Color.random())
             emb.set_footer(text = 'cha-ching!')
             emb.set_author(name = ctx.message.author, icon_url = ctx.author.avatar)
 
@@ -227,7 +227,7 @@ class BucksDB(commands.Cog):
                                     else:
                                         steal = random.randint(1, (cash//4))
                                     
-                                    emb = Embed(description = f'{ctx.author.mention} stole {steal}❂ from {member.mention} 😱🤑 ')
+                                    emb = Embed(description = f'{ctx.author.mention} stole ❂{steal} from {member.mention} 😱🤑 ')
                                     emb.set_footer(text = '💲🤑')
                                     await ctx.reply(embed = emb)
                                 
@@ -243,7 +243,7 @@ class BucksDB(commands.Cog):
                                     convar.close()
 
                                 else:
-                                    emb = Embed(description =  f'Give {member.mention} a break. They have only {cash}❂', colour = discord.Colour.random())
+                                    emb = Embed(description =  f'Give {member.mention} a break. They have only ❂{cash}', colour = discord.Colour.random())
                                     emb.set_footer(text = 'lmao')
                                     await ctx.reply(embed = emb)
                             else:
@@ -366,7 +366,7 @@ class BucksDB(commands.Cog):
                                     SET ChimkenBucks = ChimkenBucks-{}
                                     WHERE User_ID = {}""".format(amount, giver))
                     convar.commit()
-                    emb2 = Embed(description = f'{member.mention} has been given {amount}❂ by {ctx.author.mention}!')
+                    emb2 = Embed(description = f'{member.mention} has been given ❂{amount} by {ctx.author.mention}!')
                     await interaction.response.edit_message(embed = emb2, view = self)
 
                 @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
@@ -376,7 +376,7 @@ class BucksDB(commands.Cog):
                     emb2 = Embed(description = f'Okay, transaction cancelled. ')
                     await interaction.response.edit_message(embed = emb2, view = self)
 
-            emb = Embed(title = 'How noble!', description = f'You are about to give {amount}❂ to {member.mention}. Are you sure?')
+            emb = Embed(title = 'How noble!', description = f'You are about to give ❂{amount} to {member.mention}. Are you sure?')
 
             await ctx.reply(embed = emb, view = Confirmation(ctx))
     
@@ -395,7 +395,7 @@ class BucksDB(commands.Cog):
             rank = 1
             for i in recs:
                 name = self.bot.get_user(i[0])
-                userstr += f'{rank}. `❂{i[1]}` - {name} \n'
+                userstr += f'{rank}. ❂{i[1]} - {name} \n'
                 rank += 1
 
             emb = Embed(title = '**Global Leaderboards**', description= userstr, colour = 0xFFD700)
@@ -404,8 +404,6 @@ class BucksDB(commands.Cog):
             emb.set_footer(text = 'OMG Legends')
             await ctx.send(embed = emb)
             convar.close()
-
-
 
 
 
