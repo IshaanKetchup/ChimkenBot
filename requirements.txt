@@ -5,4 +5,5 @@ beautifulsoup4
 lxml
 psycopg2
 asyncpg
-pillow
+Pillow
+gnewsclient
