@@ -60,15 +60,8 @@ class BucksDB(commands.Cog):
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
 
-        cursor.execute('''Desc Records''')
-        '''membercash = cursor.fetchall()
-        memberrecs = []
-        for i in membercash:
-            memberrecs.append(list(i))
+        print(cursor.execute('''Desc Records'''))
 
-
-        for guild in self.bot.guilds:
-            for member in guild.members:'''
 
     @commands.command()
     async def start(self, ctx):
