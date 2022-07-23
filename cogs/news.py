@@ -42,7 +42,7 @@ class News(commands.Cog):
         else:
             client = gn.NewsClient(topic = message)
             topics = client.topics
-
+            message = message.title()
             if message in topics:
                 client = gn.NewsClient(topic = message)
                 newsn = random.choice(client.get_news())
@@ -50,7 +50,7 @@ class News(commands.Cog):
                 titlen = newsn['title']
                 embed = Embed(title = titlen, url = linkn, colour = discord.Colour.random())
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
-                embed.set_footer(text = "Here's a random headline")
+                embed.set_footer(text = f"Here's a random {message} headline")
                 await ctx.reply(embed = embed)
 
             else:
