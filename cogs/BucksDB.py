@@ -8,7 +8,7 @@ import os
 import math
 
 
-DATABASE_URL = 10 #os.environ['DATABASE_URL']
+DATABASE_URL = os.environ['DATABASE_URL']
 
 class BucksDB(commands.Cog):
     def __init__(self, bot):
