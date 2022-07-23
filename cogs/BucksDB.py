@@ -11,9 +11,26 @@ import math
 DATABASE_URL = os.environ['DATABASE_URL']
 
 class BucksDB(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot, ):
         self.bot = bot
     
+        def checkrec():
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+
+            cursor.execute('SELECT * FROM records')
+            records = cursor.fetchall()
+            convar.close()
+            users = []
+            for i in records:
+                users.append(records[0])
+
+            return users
+
+        self.users = checkrec()
+
+        
+
     @commands.Cog.listener()
     async def on_ready(self):
         print('BucksDB online')
@@ -37,34 +54,46 @@ class BucksDB(commands.Cog):
             emb = Embed(description='*LMAO slow it down bud!*', colour = discord.Colour.random())
             emb.add_field(name = 'This command is on cooldown for `{}`'.format(valst), value = '🤕')
             await ctx.reply(embed = emb)
-        
-        
-    @commands.command()
-    async def add_bucks(self, ctx):
-        membercash = []
 
-        if ctx.author.id == 572792089599803394:
+    @commands.command()
+    async def update(self, ctx):
+        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+        cursor = convar.cursor()
+
+        cursor.execute('''Desc Records''')
+        '''membercash = cursor.fetchall()
+        memberrecs = []
+        for i in membercash:
+            memberrecs.append(list(i))
+
+
+        for guild in self.bot.guilds:
+            for member in guild.members:'''
+
+    @commands.command()
+    async def start(self, ctx):
+        users = self.users
+        id = ctx.author.id
+
+        if id in users:
+            emb = Embed(description = 'You already have a ChimkenRecord, silly!')
+            await ctx.reply(embed = emb)
+        
+        else:
+            member = ctx.author
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
 
-            for guild in self.bot.guilds:
-                for member in guild.members:
-                    membercash.append((member.id, 0, 'False'))
-        
-            membercash = list(set(membercash))
-            await ctx.send('hello')
-            
-            for i in membercash:
-                #await ctx.send(i)
-                cursor.execute("INSERT INTO records VALUES {}".format(i))
-                
-            await ctx.send('Inserted')
-            #convar.commit()
-            await ctx.reply('New ChimkenBucks initialised') 
-            print()
+            values = (member.id, 0, 'False', member)
+            cursor.execute(f'''INSERT INTO records values {values}''')
+            convar.commit()
+            convar.close()
+            emb = Embed(description = 'Welcome to ChimkenBucks! Your record has been initialised.')
+            await ctx.send(embed = emb)
     
     @commands.command(aliases = ['bal', 'money','wallet'])
     async def cash(self, ctx, member: discord.Member = None):
+        users = self.users
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
         file = open('money.txt', 'r')
@@ -96,25 +125,31 @@ class BucksDB(commands.Cog):
         else:
             member = ctx.author
             id = ctx.author.id
-            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
-            posessions = cursor.fetchall()
+            if member.id in users:
+                
+                cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+                posessions = cursor.fetchall()
 
-            cash = list(posessions)[0][1]
-            passive = list(posessions)[0][2]
-            cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
-            posessions = cursor.fetchall()
+                cash = list(posessions)[0][1]
+                passive = list(posessions)[0][2]
+                cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+                posessions = cursor.fetchall()
 
-            cash = list(posessions)[0][1]
-            passive = list(posessions)[0][2]
+                cash = list(posessions)[0][1]
+                passive = list(posessions)[0][2]
 
-            emb = Embed(title = 'Wallet', color = discord.Colour.random())
-            emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
-            emb.add_field(name = 'Passive Mode', value = f'{passive}')
-            emb.set_author(name = member, icon_url = ctx.author.avatar)
-            emb.set_footer(text = f'Here are the ❂')
-            emb.set_thumbnail(url = url)
-            await ctx.reply(embed = emb)
-            convar.close()
+                emb = Embed(title = 'Wallet', color = discord.Colour.random())
+                emb.add_field(name = 'ChimkenBucks', value = f'{cash}❂')
+                emb.add_field(name = 'Passive Mode', value = f'{passive}')
+                emb.set_author(name = member, icon_url = ctx.author.avatar)
+                emb.set_footer(text = f'Here are the ❂')
+                emb.set_thumbnail(url = url)
+                await ctx.reply(embed = emb)
+                convar.close()
+            else:
+                emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
+                await ctx.send(embed = emb)
+
     
     @commands.command(aliases = ['earn', 'job'])
     @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
@@ -319,6 +354,15 @@ class BucksDB(commands.Cog):
         emb = Embed(title = 'How noble!', description = f'You are about to give {amount}❂ to {member.mention}. Are you sure?')
 
         await ctx.send(embed = emb, view = Confirmation(ctx))
+
+    @commands.command()
+    async def leaderboards(self, ctx):
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+
+            cursor.execute()
+
+
 
 def setup(bot):
     bot.add_cog(BucksDB(bot))
