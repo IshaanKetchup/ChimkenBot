@@ -60,8 +60,11 @@ class BucksDB(commands.Cog):
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
 
-        string = str(cursor.execute('''Desc Records'''))
-        await ctx.send(f'{string}')
+        cursor.execute("select * from records")
+        x = cursor.fetchall()
+        for i in x:
+            await ctx.send(x)
+        convar.close()
 
 
     @commands.command()
