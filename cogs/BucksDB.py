@@ -398,7 +398,7 @@ class BucksDB(commands.Cog):
                 userstr += f'{rank}. {name} - {i[1]}❂ \n'
                 rank += 1
 
-            emb = Embed(title = '**Leaderboards**', description= userstr, colour = 0xFFD700)
+            emb = Embed(title = '**Global Leaderboards**', description= userstr, colour = 0xFFD700)
             emb.set_thumbnail(url = self.bot.user.display_avatar)
             emb.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             emb.set_footer(text = 'OMG Legends')
