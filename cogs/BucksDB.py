@@ -243,7 +243,7 @@ class BucksDB(commands.Cog):
             await ctx.reply(embed = emb)
 
     @commands.command()
-    @commands.cooldown(rate = 1, per = 1800, type=commands.BucketType.user)
+    @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
     async def give(self,ctx, member : discord.Member, message = None):
 
         amount = int(message)
