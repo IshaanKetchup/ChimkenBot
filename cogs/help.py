@@ -204,7 +204,7 @@ class Help(commands.Cog):
 
         emb5 = discord.Embed(title = '**OTHER COMMANDS**', color = discord.Color.random())
         emb5.add_field(name = "Jokes", value = ">funny", inline= True)        
-        emb5.add_field(name = "News", value ='>news', inline = True)
+        emb5.add_field(name = "News", value ='>news (topic)', inline = True)
         emb5.add_field(name = "Google search", value = ">search (search query)", inline= True)
         emb5.add_field(name = "Hello", value = '>hello', inline= True)
         emb5.add_field(name = "Rick", value = '>rick', inline= True)
