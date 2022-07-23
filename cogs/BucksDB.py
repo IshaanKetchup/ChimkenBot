@@ -60,9 +60,13 @@ class BucksDB(commands.Cog):
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
 
-        cursor.execute("Delete from records where ChimkenBucks = 0")        
+        cursor.execute("select * from records")        
+        x = cursor.fetchall()
+        for i in x:
+            await ctx.send(i)
         convar.commit()
         convar.close()
+
 
 
 
