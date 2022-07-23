@@ -124,7 +124,7 @@ class BucksDB(commands.Cog):
                 emb = Embed(title = 'Wallet', color = discord.Colour.random())
                 emb.add_field(name = 'ChimkenBucks', value = f'❂{cash}')
                 emb.add_field(name = 'Passive Mode', value = f'{passive}')
-                emb.set_author(name = member, icon_url = ctx.author.avatar)
+                emb.set_author(name = member, icon_url = member.avatar)
                 emb.set_footer(text = f'Here are the ❂')
                 emb.set_thumbnail(url = url)
                 await ctx.reply(embed = emb)
