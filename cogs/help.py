@@ -1,7 +1,7 @@
 from socket import timeout
 from discord.ext import commands
 import discord
-from discord import Embed
+#from discord import Embed
 import random
 
 class Help(commands.Cog):
@@ -27,7 +27,7 @@ class Help(commands.Cog):
 
             async def interaction_check(self, interaction):
                 if interaction.user != self.ctx.author:
-                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    embED = discord.Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
                     await interaction.response.send_message(embed = embED, ephemeral= True)
                     return False
                 else:
@@ -116,8 +116,9 @@ class Help(commands.Cog):
         emb2 = discord.Embed(title = "**Currency Commands**", color = discord.Color.random())
         emb2.add_field(name = 'Work', value = '>work')
         emb2.add_field(name = 'Steal', value = '>steal @user')
-        #emb2.add_field(name = 'Gamble', value = '>gamble (amount)')
+        emb2.add_field(name = 'Give', value = '>gift @user (amount)')
         emb2.add_field(name = 'Passive Mode', value = '>passive (true/false)')
+        emb2.add_field(name = 'Global Leaderboards', value = '>leaderboards')
         #emb2.add_field(name = 'Daily', value = '>daily')
         #emb2.add_field(name = 'Monthly', value = '>monthly')
         emb2.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
