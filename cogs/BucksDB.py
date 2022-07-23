@@ -55,7 +55,7 @@ class BucksDB(commands.Cog):
             emb.add_field(name = 'This command is on cooldown for `{}`'.format(valst), value = '🤕')
             await ctx.reply(embed = emb)
 
-     @commands.command()
+    @commands.command()
     async def update(self, ctx):
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
