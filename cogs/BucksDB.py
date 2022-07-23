@@ -351,6 +351,10 @@ class BucksDB(commands.Cog):
                 @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes')
                 async def button1_callback(self, button, interaction):
                     button2 = [x for x in self.children if x.custom_id == 'No']
+
+                    button.disabled = True
+                    button2.disabled = True
+
                     receiver = member.id
                     giver = ctx.author.id
                     amount = int(message)
@@ -372,6 +376,10 @@ class BucksDB(commands.Cog):
                 @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
                 async def button2_callback(self, button, interaction):
                     button1 = [x for x in self.children if x.custom_id == 'Yes']
+
+
+                    button1.disabled = True
+                    button.disabled = True
 
                     emb2 = Embed(description = f'Okay, transaction cancelled. ')
                     await interaction.response.edit_message(embed = emb2, view = self)
