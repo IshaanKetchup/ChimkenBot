@@ -403,7 +403,7 @@ class BucksDB(commands.Cog):
             rank = 1
             for i in recs:
                 name = self.bot.get_user(i[0])
-                userstr += f'{rank}. ❂{i[1]} - {name} \n'
+                userstr += f'{rank}. `❂{i[1]}` - {name} \n'
                 rank += 1
 
             emb = Embed(title = '**Global Leaderboards**', description= userstr, colour = 0xFFD700)
