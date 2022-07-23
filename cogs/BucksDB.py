@@ -55,16 +55,18 @@ class BucksDB(commands.Cog):
             emb.add_field(name = 'This command is on cooldown for `{}`'.format(valst), value = '🤕')
             await ctx.reply(embed = emb)
 
-    @commands.command()
+     @commands.command()
     async def update(self, ctx):
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
 
-        cursor.execute("select * from records")
+        cursor.execute("""SELECT COLUMN_NAME
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_NAME = records""")        
         x = cursor.fetchall()
         for i in x:
             await ctx.send(i)
-        convar.close()
+
 
 
     @commands.command()
