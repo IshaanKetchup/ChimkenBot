@@ -65,10 +65,12 @@ class BucksDB(commands.Cog):
         userstr = ''
         for i in x:
             name = self.bot.get_user(i[0])
-            userstr += f'{name} -- {i[1]} -- {i[2]} \n'
-            
-        emb = Embed(description= userstr)
+            print(name)
+            #userstr += f'{name} -- {i[1]} -- {i[2]} \n'
+
+        #emb = Embed(description= userstr)
         convar.close()
+
 
        
 
