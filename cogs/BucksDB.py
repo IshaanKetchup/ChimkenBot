@@ -23,7 +23,7 @@ class BucksDB(commands.Cog):
             convar.close()
             users = []
             for i in records:
-                users.append(records[0])
+                users.append(i[0])
 
             return users
 
@@ -56,7 +56,7 @@ class BucksDB(commands.Cog):
             await ctx.reply(embed = emb)
 
     @commands.command()
-    async def update(self, ctx):
+    async def viewall(self, ctx):
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
 
@@ -64,12 +64,10 @@ class BucksDB(commands.Cog):
         x = cursor.fetchall()
         for i in x:
             await ctx.send(i)
-        convar.commit()
         convar.close()
+    
 
-
-
-
+       
 
     @commands.command()
     async def start(self, ctx):
