@@ -62,10 +62,13 @@ class BucksDB(commands.Cog):
 
         cursor.execute("select * from records")        
         x = cursor.fetchall()
+        userstr = ''
         for i in x:
-            await ctx.send(i)
+            name = self.bot.get_user(i[0])
+            userstr += f'{name} -- {i[1]} -- {i[2]} \n'
+            
+        emb = Embed(description= userstr)
         convar.close()
-    
 
        
 
