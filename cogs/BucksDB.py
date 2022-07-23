@@ -60,7 +60,8 @@ class BucksDB(commands.Cog):
         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
         cursor = convar.cursor()
 
-        print(cursor.execute('''Desc Records'''))
+        string = str(cursor.execute('''Desc Records'''))
+        await ctx.send(f'{string}')
 
 
     @commands.command()
