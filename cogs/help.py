@@ -126,28 +126,34 @@ class Help(commands.Cog):
                 ]
             )
             async def select_callback(self, select, interaction):
+                global pg
                 button1 = [x for x in self.children if x.custom_id == 'left'][0]
                 button2 = [x for x in self.children if x.custom_id == 'right'][0]
                 if select.values[0] == '1':
                     emb = emb1
                     button1.disabled = True
                     button2.disabled = False
+                    pg = 1
                 elif select.values[0] == '2':
                     emb = emb2
                     button1.disabled = False
                     button2.disabled = False
+                    pg = 2
                 elif select.values[0] == '3':
                     emb = emb3
                     button1.disabled = False
                     button2.disabled = False
+                    pg = 3
                 elif select.values[0] == '4':
                     emb = emb4
                     button1.disabled = False
                     button2.disabled = False
+                    pg = 4
                 elif select.values[0] == '5':
                     emb = emb5
                     button1.disabled = False
                     button2.disabled = True
+                    pg = 5
                 await interaction.response.edit_message(embed = emb, view = self)
 
             async def on_timeout(self):
