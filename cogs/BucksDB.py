@@ -404,8 +404,8 @@ class BucksDB(commands.Cog):
             for i in recs:
                 name = self.bot.get_user(i[0])
                 cash = i[1]
-                value = '{:,}'.format(cash)
-                userstr += '{0:2}. `❂{1:^20}` - {2:^20} \n'.format(rank,i[1], i[0])
+                value = '`❂{:,}`'.format(cash)
+                userstr += '{0:2}. {1:^20} - {2:^20} \n'.format(rank,i[1], name)
                 rank += 1
 
             emb = Embed(title = '**Global Leaderboards**', description= userstr, colour = 0xFFD700)
