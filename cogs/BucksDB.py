@@ -18,26 +18,6 @@ class BucksDB(commands.Cog):
     async def on_ready(self):
         print('BucksDB online')
 
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            time = error.retry_after
-            if time < 86400:
-                seconds = time % (24 * 3600)
-                hour = seconds // 3600
-                seconds %= 3600
-                minutes = seconds // 60
-                seconds %= 60
-                    
-                valst = "%d:%02d:%02d" % (hour, minutes, seconds)
-            else:
-                days = int(math.ceil(time//86400))
-                valst = f'{days} days'
-            
-            emb = Embed(description='*LMAO slow it down bud!*', colour = discord.Colour.random())
-            emb.add_field(name = 'This command is on cooldown for `{}`'.format(valst), value = '🤕')
-            await ctx.reply(embed = emb)
-    
     @commands.command()
     async def add_bucks(self, ctx):
         membercash = []
