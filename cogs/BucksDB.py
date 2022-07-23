@@ -63,7 +63,7 @@ class BucksDB(commands.Cog):
         cursor.execute("select * from records")
         x = cursor.fetchall()
         for i in x:
-            await ctx.send(x)
+            await ctx.send(i)
         convar.close()
 
 
