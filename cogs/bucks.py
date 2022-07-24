@@ -478,7 +478,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -541,7 +541,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -604,7 +604,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -667,7 +667,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -730,7 +730,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -793,7 +793,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -856,7 +856,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -919,7 +919,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
@@ -982,7 +982,7 @@ class BucksDB(commands.Cog):
 
                     
                     if difference == 0:
-                        win = 2*bet
+                        win = 3*bet
 
                         convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                         cursor = convar.cursor()
