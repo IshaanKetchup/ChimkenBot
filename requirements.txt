@@ -1,8 +1,8 @@
 py-cord
 asyncpraw
 asyncio
-beautifulsoup4
-lxml
+#beautifulsoup4
+#lxml
 psycopg2
 asyncpg
 Pillow
