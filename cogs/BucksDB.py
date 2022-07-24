@@ -415,6 +415,323 @@ class BucksDB(commands.Cog):
             await ctx.send(embed = emb)
             convar.close()
 
+    @commands.command()
+    async def gamble(self, ctx, message):
+        #if message is not None:
+
+        id = ctx.author.id
+        bet = int(message.lstrip())
+        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+        cursor = convar.cursor()
+
+        cursor.execute(f'''UPDATE records
+                          SET ChimkenBucks = ChimkenBucks - {bet}
+                          WHERE User_ID = {id}''')
+
+
+        class Guess(discord.ui.View):
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = discord.Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
+
+            @discord.ui.button(label = '1', style = discord.ButtonStyle.primary, row = 0, custom_id= '1')
+            async def button1_callback(self, button, interaction):
+                
+                button2 = [x for x in self.children if x.custom_id == '2'][0]
+                button3 = [x for x in self.children if x.custom_id == '3'][0]
+                button4 = [x for x in self.children if x.custom_id == '4'][0]
+                button5 = [x for x in self.children if x.custom_id == '5'][0]
+                button6 = [x for x in self.children if x.custom_id == '6'][0]
+                guess = 1
+                difference = guess - number
+                if difference <0:
+                    difference = 0-difference
+
+                button.disabled = True
+                button2.disabled = True
+                button3.disabled = True
+                button4.disabled = True
+                button5.disabled = True
+                button6.disabled = True
+                
+                if difference == 0:
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
+                    
+                    win = 2*bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                                
+                    emb = discord.Embed(description= f'You guessed it right! You get ❂{win}')
+                    emb.set_footer(text = 'GG')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                    
+                elif difference == 1 :
+                    win = bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                    
+                    emb = discord.Embed(description= 'So close! You get your money back! (❂{win})')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                else:
+                    emb = discord.Embed(description= 'You lose!')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+
+            @discord.ui.button(label = '2', style = discord.ButtonStyle.primary, row = 0, custom_id= '2')
+            async def button2_callback(self, button, interaction):
+                button1 = [x for x in self.children if x.custom_id == '1'][0]
+
+                button3 = [x for x in self.children if x.custom_id == '3'][0]
+                button4 = [x for x in self.children if x.custom_id == '4'][0]
+                button5 = [x for x in self.children if x.custom_id == '5'][0]
+                button6 = [x for x in self.children if x.custom_id == '6'][0]
+                guess = 2
+                difference = guess - number
+                if difference <0:
+                    difference = 0-difference
+
+                button1.disabled = True
+                button.disabled = True
+                button3.disabled = True
+                button4.disabled = True
+                button5.disabled = True
+                button6.disabled = True
+                
+                if difference == 0:
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
+                    
+                    win = 2*bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                                
+                    emb = discord.Embed(description= f'You guessed it right! You get ❂{win}')
+                    emb.set_footer(text = 'GG')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                    
+                elif difference == 1 :
+                    win = bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                    
+                    emb = discord.Embed(description= 'So close! You get your money back! (❂{win})')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                else:
+                    emb = discord.Embed(description= 'You lose!')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+
+            @discord.ui.button(label = '3', style = discord.ButtonStyle.primary, row = 0, custom_id= '3')   
+            async def button3_callback(self, button, interaction):
+                button1 = [x for x in self.children if x.custom_id == '1'][0]
+                button2 = [x for x in self.children if x.custom_id == '2'][0]
+                
+                button4 = [x for x in self.children if x.custom_id == '4'][0]
+                button5 = [x for x in self.children if x.custom_id == '5'][0]
+                button6 = [x for x in self.children if x.custom_id == '6'][0]
+                guess = 3
+                difference = guess - number
+                if difference <0:
+                    difference = 0-difference
+
+                button1.disabled = True
+                button2.disabled = True
+                button.disabled = True
+                button4.disabled = True
+                button5.disabled = True
+                button6.disabled = True
+                
+                if difference == 0:
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
+                    
+                    win = 2*bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                                
+                    emb = discord.Embed(description= f'You guessed it right! You get ❂{win}')
+                    emb.set_footer(text = 'GG')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                    
+                elif difference == 1 :
+                    win = bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                    
+                    emb = discord.Embed(description= 'So close! You get your money back! (❂{win})')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                else:
+                    emb = discord.Embed(description= 'You lose!')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+
+            @discord.ui.button(label = '4', style = discord.ButtonStyle.primary, row = 1, custom_id= '4')
+            async def button4_callback(self, button, interaction):
+                button1 = [x for x in self.children if x.custom_id == '1'][0]
+                button2 = [x for x in self.children if x.custom_id == '2'][0]
+                button3 = [x for x in self.children if x.custom_id == '3'][0]
+                
+                button5 = [x for x in self.children if x.custom_id == '5'][0]
+                button6 = [x for x in self.children if x.custom_id == '6'][0]
+                guess = 4
+                difference = guess - number
+                if difference <0:
+                    difference = 0-difference
+
+                button1.disabled = True
+                button2.disabled = True
+                button.disabled = True
+                button.disabled = True
+                button5.disabled = True
+                button6.disabled = True
+                
+                if difference == 0:
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
+                    
+                    win = 2*bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                                
+                    emb = discord.Embed(description= f'You guessed it right! You get ❂{win}')
+                    emb.set_footer(text = 'GG')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                    
+                elif difference == 1 :
+                    win = bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                    
+                    emb = discord.Embed(description= 'So close! You get your money back! (❂{win})')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                else:
+                    emb = discord.Embed(description= 'You lose!')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+
+            @discord.ui.button(label = '5', style = discord.ButtonStyle.primary, row = 1, custom_id= '5')  
+            async def button5_callback(self, button, interaction):
+                button1 = [x for x in self.children if x.custom_id == '1'][0]
+                button2 = [x for x in self.children if x.custom_id == '2'][0]
+                button3 = [x for x in self.children if x.custom_id == '3'][0]
+                button4 = [x for x in self.children if x.custom_id == '4'][0]
+                
+                button6 = [x for x in self.children if x.custom_id == '6'][0]
+                guess = 5
+                difference = guess - number
+                if difference <0:
+                    difference = 0-difference
+
+                button1.disabled = True
+                button2.disabled = True
+                button.disabled = True
+                button4.disabled = True
+                button.disabled = True
+                button6.disabled = True
+                
+                if difference == 0:
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
+                    
+                    win = 2*bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                                
+                    emb = discord.Embed(description= f'You guessed it right! You get ❂{win}')
+                    emb.set_footer(text = 'GG')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                    
+                elif difference == 1 :
+                    win = bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                    
+                    emb = discord.Embed(description= 'So close! You get your money back! (❂{win})')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                else:
+                    emb = discord.Embed(description= 'You lose!')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+
+            @discord.ui.button(label = '6', style = discord.ButtonStyle.primary, row = 1, custom_id= '6')   
+            async def button6_callback(self, button, interaction):
+                button1 = [x for x in self.children if x.custom_id == '1'][0]
+                button2 = [x for x in self.children if x.custom_id == '2'][0]
+                button3 = [x for x in self.children if x.custom_id == '3'][0]
+                button4 = [x for x in self.children if x.custom_id == '4'][0]
+                button5 = [x for x in self.children if x.custom_id == '5'][0]
+                
+                guess = 6
+                difference = guess - number
+                if difference <0:
+                    difference = 0-difference
+
+                button1.disabled = True
+                button2.disabled = True
+                button.disabled = True
+                button4.disabled = True
+                button5.disabled = True
+                button.disabled = True
+                
+                if difference == 0:
+                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                    cursor = convar.cursor()
+                    
+                    win = 2*bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                                
+                    emb = discord.Embed(description= f'You guessed it right! You get ❂{win}')
+                    emb.set_footer(text = 'GG')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                    
+                elif difference == 1 :
+                    win = bet
+                    cursor.execute(f'''UPDATE records
+                                    SET ChimkenBucks = ChimkenBucks + {win}
+                                    WHERE User_ID = {id}''')
+                    
+                    emb = discord.Embed(description= 'So close! You get your money back! (❂{win})')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+                else:
+                    emb = discord.Embed(description= 'You lose!')
+                    emb.set_footer(text = f'You missed by {difference}')
+                    await interaction.response.edit_message(embed = emb, view = self)
+
+        emb = discord.Embed(description= 'Guess a number')
+        message = await ctx.send(embed = emb, view = Guess(ctx))
+
+        number = random.randint(1,6)
 
 
 
