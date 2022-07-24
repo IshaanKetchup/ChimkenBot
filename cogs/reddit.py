@@ -21,14 +21,59 @@ class Reddit(commands.Cog):
         print('Reddit Cog Online')
         
         
-
     @commands.command(aliases = ['memes','meemee', 'memey'])
     async def meme(self, ctx):
-                
         subreddit = await self.reddit.subreddit('memes', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'nicc meme')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'nicc meme')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -40,21 +85,21 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'nicc meme')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'nicc meme')
-            await ctx.reply(embed = embed)
-        
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
+
     @commands.command(aliases = ['dank', 'dm'])
     async def dankmeme(self, ctx):
         
@@ -62,7 +107,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('IndianDankMemes', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'dAnK')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'dAnK')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -74,20 +170,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'dAnK')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'dAnK')
-            await ctx.reply(embed = embed)
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
 
     @commands.command(aliases =['cr', 'chem'])
     async def reaction(self, ctx):
@@ -95,7 +191,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('ChemicalReactionGIFs', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'thank god that didn\'t explode')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'thank god that didn\'t explode')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -107,20 +254,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
-                embed.set_footer(text = "thank god that didn't explode ")
-                await ctx.reply(embed = embed)
+                embed.set_footer(text = 'thank god that didn\'t explode')
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
-            embed.set_footer(text = "thank god that didn't explode ")
-            await ctx.reply(embed = embed)
+            embed.set_footer(text = 'thank god that didn\'t explode')
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
 
     @commands.command(aliases = ['f'])
     async def fact(self, ctx):
@@ -128,7 +275,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('funfacts', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'ok')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'ok')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -140,20 +338,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'ok')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'ok')
-            await ctx.reply(embed = embed)
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
 
     @commands.command(aliases = ['perfecttiming', 'pt'])
     async def wowpics(self, ctx):
@@ -161,7 +359,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('PerfectTiming', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'wow.')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'wow.')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -173,20 +422,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'wow.')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'wow.')
-            await ctx.reply(embed = embed)
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
 
     @commands.command(aliases = ['dog', 'doggo', 'woof'])
     async def doggie(self, ctx):
@@ -194,7 +443,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('dogpictures', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'ruff ruff🐶')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'ruff ruff🐶')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -206,20 +506,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'ruff ruff🐶')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'ruff ruff🐶')
-            await ctx.reply(embed = embed)
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
 
     @commands.command(aliases = ['cat', 'meow', 'pspsps', 'catto'])
     async def kitty(self, ctx):
@@ -227,7 +527,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('catpictures', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'MEOWWWWW🐱')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'MEOWWWWW🐱')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -239,20 +590,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'MEOWWWWW🐱')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'MEOWWWWW🐱')
-            await ctx.reply(embed = embed)
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
 
     @commands.command(aliases = ['duck', 'ducko', 'quack'])
     async def duckie(self, ctx):
@@ -261,7 +612,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('duck', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'OH 🦆')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'OH 🦆')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -273,20 +675,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'OH 🦆')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'OH 🦆')
-            await ctx.reply(embed = embed)
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
 
     @commands.command()
     async def aww(self, ctx):
@@ -294,7 +696,58 @@ class Reddit(commands.Cog):
         subreddit = await self.reddit.subreddit('aww', fetch = True)
         posts = []
         hot = subreddit.hot(limit = 100)
-        
+        class NewPost(discord.ui.View):      
+
+            def __init__(self, ctx):
+                super().__init__(timeout = 10)
+                self.ctx = ctx
+                
+            
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await message.edit(view = self)
+
+
+            @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
+            async def button1_callback(self, button, interaction):
+                iter = True
+                async for submission in hot:
+                    posts.append(submission)
+    
+                randompost = random.choice(posts)
+                name = randompost.title
+                url  = randompost.url
+                go = "https://www.reddit.com" + randompost.permalink
+                if hasattr(randompost, 'post_hint'):
+                    hint = randompost.post_hint
+                    if hint == 'hosted:video' or hint == 'rich:video':
+                        await interaction.response.edit_message(content = go, embed = None, view = self)
+                    else:
+                        embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
+                        embed.set_image(url = url)
+                        embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                        embed.set_footer(text = 'OMG AWW')
+                        await interaction.response.edit_message(content = None, embed = embed, view = self)
+                            
+                else:
+                    embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
+                    embed.set_image(url = url)
+                    embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+                    embed.set_footer(text = 'OMG AWW')
+
+                    await interaction.response.edit_message(content = None, embed = embed, view = self)
+
+            @discord.ui.button(label = 'End', style = discord.ButtonStyle.danger, row = 0)
+            async def button2_callback(self, button, interaction):
+                iter = False
+                button1 = [x for x in self.children if x.custom_id == 'More'][0]
+
+                button1.disabled = True
+                button.disabled = True
+                await interaction.response.edit_message(view = self)
+
+
         async for submission in hot:
             posts.append(submission)
             
@@ -306,20 +759,20 @@ class Reddit(commands.Cog):
         if hasattr(randompost, 'post_hint'):
             hint = randompost.post_hint
             if hint == 'hosted:video' or hint == 'rich:video':
-                await ctx.reply(go)
+                message = await ctx.reply(content = go, view = NewPost(ctx))
             else:
                 embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = go)
                 embed.set_image(url = url)
                 embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
                 embed.set_footer(text = 'OMG AWW')
-                await ctx.reply(embed = embed)
+                message = await ctx.reply(embed = embed, view = NewPost(ctx))
         
         else:
             embed = Embed(title = f'{name}', colour = discord.Colour.random(), url = url)
             embed.set_image(url = url)
             embed.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             embed.set_footer(text = 'OMG AWW')
-            await ctx.reply(embed = embed)
+            message = await ctx.reply(embed = embed, view = NewPost(ctx))
     
     @commands.command()
     async def reddit(self, ctx, message):
