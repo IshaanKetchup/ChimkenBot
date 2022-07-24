@@ -179,10 +179,9 @@ class Help(commands.Cog):
         emb2.add_field(name = 'Work', value = '>work')
         emb2.add_field(name = 'Steal', value = '>steal @user')
         emb2.add_field(name = 'Give', value = '>gift @user (amount)')
+        emb2.add_field(name = 'Gamble', value = '>gamble (cash)')
         emb2.add_field(name = 'Passive Mode', value = '>passive (true/false)')
         emb2.add_field(name = 'Global Leaderboards', value = '>leaderboards')
-        #emb2.add_field(name = 'Daily', value = '>daily')
-        #emb2.add_field(name = 'Monthly', value = '>monthly')
         emb2.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb2.set_thumbnail(url = self.bot.user.display_avatar)
 
