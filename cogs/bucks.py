@@ -1017,7 +1017,7 @@ class BucksDB(commands.Cog):
 
 
             emb = discord.Embed(title = 'Roll the dice!', description= 'Guess the number!', color = 0xFFC0CB)
-            emb.add_field(name = 'Correct Guess', value = 'Win 2x the bet!')
+            emb.add_field(name = 'Correct Guess', value = 'Get back 3x the bet!')
             emb.add_field(name = 'Missed by 1', value = 'Get your money back!')
             emb.set_author(name = self.bot.user, icon_url= self.bot.user.display_avatar )
             emb.set_footer(text = 'Ez, right?')
