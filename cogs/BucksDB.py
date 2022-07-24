@@ -739,11 +739,12 @@ class BucksDB(commands.Cog):
                     emb = discord.Embed(description= 'You lose!')
                     emb.set_footer(text = f'You missed by {difference}')
                     await interaction.response.edit_message(embed = emb, view = self)
-
+        
+        number = random.randint(1,6)
         emb = discord.Embed(description= 'Guess a number')
         message = await ctx.send(embed = emb, view = Guess(ctx))
 
-        number = random.randint(1,6)
+
 
 
 
