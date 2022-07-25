@@ -1,4 +1,3 @@
-import sqlite3
 from discord.ext import commands
 import discord
 import random
@@ -13,7 +12,13 @@ DATABASE_URL = os.environ['DATABASE_URL']
 class BucksDB(commands.Cog):
     def __init__(self, bot, ):
         self.bot = bot
-    
+
+        def checkcash(id):
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+
+            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')
+
         def checkrec():
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
@@ -28,6 +33,7 @@ class BucksDB(commands.Cog):
             return users
 
         self.users = checkrec()
+        self.checkcash = checkcash(self.ctx.author.id)
 
         
 
@@ -71,10 +77,8 @@ class BucksDB(commands.Cog):
                 userstr += f'{name} -- {i[1]} -- {i[2]} \n'
 
             emb = Embed(description= userstr)
-            await ctx.send(embed = emb)
+            await channel.send(embed = emb)
             convar.close()
-
-       
 
     @commands.command()
     async def start(self, ctx):
@@ -156,7 +160,6 @@ class BucksDB(commands.Cog):
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
             await ctx.reply(embed = emb)
-
     
     @commands.command(aliases = ['earn', 'job'])
     @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
@@ -269,7 +272,6 @@ class BucksDB(commands.Cog):
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
             await ctx.reply(embed = emb)
-
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 86400, type=commands.BucketType.user)
@@ -417,7 +419,6 @@ class BucksDB(commands.Cog):
 
     @commands.command()
     async def gamble(self, ctx, message = None):
-        await ctx.send('Gambling')
         users = self.users
         if ctx.author.id in users:
             if message is not None:
@@ -431,7 +432,8 @@ class BucksDB(commands.Cog):
                     cursor.execute(f'''UPDATE records 
                                     SET ChimkenBucks = ChimkenBucks - {bet}
                                     WHERE User_ID = {id}''')
-                    convar.close()
+                                convar.commit()
+                                convar.close()
 
                     class Guess(discord.ui.View):
                         def __init__(self, ctx):
@@ -489,6 +491,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -501,6 +504,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -550,6 +554,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -562,6 +567,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -611,6 +617,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -623,6 +630,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -672,6 +680,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -684,6 +693,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -733,6 +743,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -745,6 +756,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -794,6 +806,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -806,6 +819,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -855,6 +869,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -867,6 +882,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -916,6 +932,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -928,6 +945,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -977,6 +995,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'WOOOO WINNER!', description= f'You guessed it right! You get `❂{win}`', color = 0x00FF00)
@@ -989,6 +1008,7 @@ class BucksDB(commands.Cog):
                                 cursor.execute(f'''UPDATE records 
                                                 SET ChimkenBucks = ChimkenBucks + {win}
                                                 WHERE User_ID = {id}''')
+                                convar.commit()
                                 convar.close()
 
                                 emb = discord.Embed(title = 'Just too bad :(', description= f'So close! You get your money back (`❂{win}`)', color = 0xFFFF00)
@@ -1023,8 +1043,7 @@ class BucksDB(commands.Cog):
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
             await ctx.reply(embed = emb)
-
-
+               
 
 def setup(bot):
     bot.add_cog(BucksDB(bot))
