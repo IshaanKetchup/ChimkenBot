@@ -175,7 +175,7 @@ class Help(commands.Cog):
         emb1.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb1.set_thumbnail(url = self.bot.user.display_avatar)
 
-        emb2 = discord.Embed(title = "**Currency Commands**", color = discord.Color.random())
+        emb2 = discord.Embed(title = "**Currency Commands (DISABLED) **", color = discord.Color.random())
         emb2.add_field(name = 'Work', value = '>work')
         emb2.add_field(name = 'Steal', value = '>steal @user')
         emb2.add_field(name = 'Give', value = '>gift @user (amount)')
