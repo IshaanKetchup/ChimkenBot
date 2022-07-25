@@ -60,11 +60,11 @@ class BucksDB(commands.Cog):
             
             emb = Embed(description='*LMAO slow it down bud!*', colour = discord.Colour.random())
             emb.add_field(name = 'This command is on cooldown for `{}`'.format(valst), value = '🤕')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
 
     @commands.command()
     async def viewall(self, ctx):
-        id = ctx.author.id
+        id = self.ctx.author.id
         channel = self.bot.get_channel(975378805889851482)
         if id == 572792089599803394 or id == 969540347619328031:
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
@@ -84,14 +84,14 @@ class BucksDB(commands.Cog):
     @commands.command()
     async def start(self, ctx):
         users = self.users
-        id = ctx.author.id
+        id = self.ctx.author.id
 
         if id in users:
             emb = Embed(description = 'You already have a ChimkenRecord, silly!')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
         
         else:
-            member = ctx.author
+            member = self.ctx.author
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
 
@@ -100,12 +100,12 @@ class BucksDB(commands.Cog):
             convar.commit()
             convar.close()
             emb = Embed(description = 'Welcome to ChimkenBucks! Your record has been initialised.')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
     
     @commands.command(aliases = ['bal', 'money','wallet'])
     async def cash(self, ctx, member: discord.Member = None):
         users = self.users
-        if ctx.author.id in users:
+        if self.ctx.author.id in users:
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
             file = open('money.txt', 'r')
@@ -132,11 +132,11 @@ class BucksDB(commands.Cog):
                 emb.set_author(name = member, icon_url = member.avatar)
                 emb.set_footer(text = f'Here are the ❂')
                 emb.set_thumbnail(url = url)
-                await ctx.reply(embed = emb)
+                await self.ctx.reply(embed = emb)
                 convar.close()
             else:
-                member = ctx.author
-                id = ctx.author.id
+                member = self.ctx.author
+                id = self.ctx.author.id
                 
                     
                 cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
@@ -153,20 +153,20 @@ class BucksDB(commands.Cog):
                 emb = Embed(title = 'Wallet', color = discord.Colour.random())
                 emb.add_field(name = 'ChimkenBucks', value = f'❂{cash}')
                 emb.add_field(name = 'Passive Mode', value = f'{passive}')
-                emb.set_author(name = member, icon_url = ctx.author.avatar)
+                emb.set_author(name = member, icon_url = self.ctx.author.avatar)
                 emb.set_footer(text = f'Here are the ❂')
                 emb.set_thumbnail(url = url)
-                await ctx.reply(embed = emb)
+                await self.ctx.reply(embed = emb)
                 convar.close()
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
     
     @commands.command(aliases = ['earn', 'job'])
     @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
     async def work(self,ctx):
         users = self.users
-        if ctx.author.id in users:
+        if self.ctx.author.id in users:
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
             weight = random.randint(1,100)
@@ -177,10 +177,10 @@ class BucksDB(commands.Cog):
                 
             emb = Embed(description = f'You earned ❂{cash}!', colour = discord.Color.random())
             emb.set_footer(text = 'cha-ching!')
-            emb.set_author(name = ctx.message.author, icon_url = ctx.author.avatar)
+            emb.set_author(name = self.ctx.message.author, icon_url = self.ctx.author.avatar)
 
-            await ctx.reply(embed = emb)
-            id = ctx.author.id
+            await self.ctx.reply(embed = emb)
+            id = self.ctx.author.id
             
             cursor.execute("""UPDATE records
                                     SET ChimkenBucks = ChimkenBucks+{}
@@ -189,17 +189,17 @@ class BucksDB(commands.Cog):
             convar.close()
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 1800, type=commands.BucketType.user)
     async def steal(self,ctx, member : discord.Member = None):
         users = self.users
 
-        if ctx.author.id in users:
+        if self.ctx.author.id in users:
             if member is not None:
                 id = member.id
-                robber = ctx.author.id
+                robber = self.ctx.author.id
 
                 if id != robber:
 
@@ -231,9 +231,9 @@ class BucksDB(commands.Cog):
                                     else:
                                         steal = random.randint(1, (cash//4))
                                     
-                                    emb = Embed(description = f'{ctx.author.mention} stole ❂{steal} from {member.mention} 😱🤑 ')
+                                    emb = Embed(description = f'{self.ctx.author.mention} stole ❂{steal} from {member.mention} 😱🤑 ')
                                     emb.set_footer(text = '💲🤑')
-                                    await ctx.reply(embed = emb)
+                                    await self.ctx.reply(embed = emb)
                                 
                                     cursor.execute("""UPDATE records
                                                     SET ChimkenBucks = ChimkenBucks-{}
@@ -249,39 +249,39 @@ class BucksDB(commands.Cog):
                                 else:
                                     emb = Embed(description =  f'Give {member.mention} a break. They have only ❂{cash}', colour = discord.Colour.random())
                                     emb.set_footer(text = 'lmao')
-                                    await ctx.reply(embed = emb)
+                                    await self.ctx.reply(embed = emb)
                             else:
                                 emb = Embed(title  = '**BEWARE, THEIF**', description = f'{member.mention} is in  `Passive Mode`. You cannot steal from them ',colour = discord.Colour.random())
                                 emb.set_footer(text = 'lmao')
-                                await ctx.reply(embed = emb)
+                                await self.ctx.reply(embed = emb)
                         else:
                             emb = Embed(description = "You can't steal from yourself, silly" )
                             emb.set_footer(text = 'xD')
-                            await ctx.reply(embed = emb)
+                            await self.ctx.reply(embed = emb)
                     else:
                         emb = Embed(description = f"You are in `Passive Mode`, silly! You can't steal from {member.mention}", colour = discord.Colour.random())
                         emb.set_footer(text = 'xD')
-                        await ctx.reply(embed = emb)
+                        await self.ctx.reply(embed = emb)
                 else:
                     emb = Embed(description= 'You can\'t steal from *yourself*!')
                     emb.set_footer(text = 'Mention someone else to steal from them')
-                    await ctx.reply(embed = emb)
+                    await self.ctx.reply(embed = emb)
             else:
                 emb = Embed(description= 'You can\'t steal from *no one*!')
                 emb.set_footer(text = 'Mention someone to steal from them')
-                await ctx.reply(embed = emb)
+                await self.ctx.reply(embed = emb)
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 86400, type=commands.BucketType.user)
     async def passive(self, ctx, message):
         users = self.users
-        if ctx.author.id in users:
+        if self.ctx.author.id in users:
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
-            id = ctx.author.id
+            id = self.ctx.author.id
             
             if message.lower() == 'true':
             
@@ -289,11 +289,11 @@ class BucksDB(commands.Cog):
                 data = cursor.fetchall()
                 if data[0][2] == 'True':
                     emb = Embed(description = 'You are already in `Passive Mode`.', colour = discord.Color.random())
-                    await ctx.reply(embed = emb)
+                    await self.ctx.reply(embed = emb)
 
                 else:
                     emb = Embed(description = 'You are now in `Passive Mode`.')
-                    await ctx.reply(embed = emb)
+                    await self.ctx.reply(embed = emb)
 
                     cursor.execute('''UPDATE records 
                                     SET passive = 'True' 
@@ -308,10 +308,10 @@ class BucksDB(commands.Cog):
 
                 if data[0][2] =='False':
                     emb = Embed(description = 'You are currently not in `Passive Mode`.', colour = discord.Color.random())
-                    await ctx.reply(embed = emb)
+                    await self.ctx.reply(embed = emb)
                 else:
                     emb = Embed(description = 'You have left `Passive Mode`.')
-                    await ctx.reply(embed = emb)
+                    await self.ctx.reply(embed = emb)
 
                     cursor.execute('''UPDATE records 
                                     SET passive = 'False' 
@@ -320,23 +320,23 @@ class BucksDB(commands.Cog):
                     convar.close()
             else:
                 emb = Embed(title = 'I DONT UNDERSTAND WYM???')
-                await ctx.reply(embed = emb)
+                await self.ctx.reply(embed = emb)
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
 
     @commands.command()
     @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
     async def give(self,ctx, member : discord.Member, message = None):
         users = self.users
-        if ctx.author.id in users:
+        if self.ctx.author.id in users:
             amount = int(message)
 
             class Confirmation(discord.ui.View):
 
-                def __init__(self, ctx):
+                def __init__(self):
                     super().__init__(timeout = 10)
-                    self.ctx = ctx
+                    
                     
                 async def on_timeout(self):
                     for child in self.children:
@@ -359,7 +359,7 @@ class BucksDB(commands.Cog):
                     button2.disabled = True
 
                     receiver = member.id
-                    giver = ctx.author.id
+                    giver = self.ctx.author.id
                     amount = int(message)
 
                     convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
@@ -373,7 +373,7 @@ class BucksDB(commands.Cog):
                                     SET ChimkenBucks = ChimkenBucks-{}
                                     WHERE User_ID = {}""".format(amount, giver))
                     convar.commit()
-                    emb2 = Embed(description = f'{member.mention} has been given ❂{amount} by {ctx.author.mention}!')
+                    emb2 = Embed(description = f'{member.mention} has been given ❂{amount} by {self.ctx.author.mention}!')
                     await interaction.response.edit_message(embed = emb2, view = self)
 
                 @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
@@ -389,11 +389,11 @@ class BucksDB(commands.Cog):
 
             emb = Embed(title = 'How noble!', description = f'You are about to give ❂{amount} to {member.mention}. Are you sure?')
 
-            await ctx.reply(embed = emb, view = Confirmation(ctx))
+            await self.ctx.reply(embed = emb, view = Confirmation())
     
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
 
     @commands.command()
     async def leaderboards(self, ctx):
@@ -413,20 +413,20 @@ class BucksDB(commands.Cog):
 
             emb = Embed(title = '**Global Leaderboards**', description= userstr, colour = 0xFFD700)
             emb.set_thumbnail(url = self.bot.user.display_avatar)
-            emb.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
+            emb.set_author(name= self.ctx.message.author, icon_url = self.ctx.author.avatar)
             emb.set_footer(text = 'OMG Legends')
-            await ctx.send(embed = emb)
+            await self.ctx.send(embed = emb)
             convar.close()
 
     @commands.command()
     async def gamble(self, ctx, message = None):
         users = self.users
-        if ctx.author.id in users:
+        if self.ctx.author.id in users:
             if message is not None:
                 cash = self.checkcash
                 bet = int(message.lstrip())
                 if bet<= cash:
-                    id = ctx.author.id
+                    id = self.ctx.author.id
 
                     convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
                     cursor = convar.cursor()
@@ -437,9 +437,9 @@ class BucksDB(commands.Cog):
                     convar.close()
 
                     class Guess(discord.ui.View):
-                        def __init__(self, ctx):
+                        def __init__(self):
                             super().__init__(timeout = 10)
-                            self.ctx = ctx
+                            
                             
                         async def on_timeout(self):
                             for child in self.children:
@@ -1027,23 +1027,23 @@ class BucksDB(commands.Cog):
                     emb.add_field(name = 'Missed by 1', value = 'Get your money back!')
                     emb.set_author(name = self.bot.user, icon_url= self.bot.user.display_avatar )
                     emb.set_footer(text = 'Ez, right?')
-                    message = await ctx.send(embed = emb, view = Guess(ctx))
+                    message = await self.ctx.send(embed = emb, view = Guess())
 
                     number = random.randint(1,9)
                 else:
                     emb = discord.Embed(title = 'Don\'t try to fool me >:(', description= 'You don\'t have those many ChimkenBucks')
                     emb.set_author(name = self.bot.user, icon_url= self.bot.user.display_avatar)
                     emb.set_footer(text = 'Calling security')
-                    message = await ctx.send(embed = emb)
+                    message = await self.ctx.send(embed = emb)
 
             else:
                 emb = discord.Embed(title = 'Don\'t try to fool me >:(', description= 'You need to bet something to play, dummy')
                 emb.set_author(name = self.bot.user, icon_url= self.bot.user.display_avatar)
                 emb.set_footer(text = 'Calling security')
-                message = await ctx.send(embed = emb)
+                message = await self.ctx.send(embed = emb)
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-            await ctx.reply(embed = emb)
+            await self.ctx.reply(embed = emb)
                
 
 def setup(bot):
