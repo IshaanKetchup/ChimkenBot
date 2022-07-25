@@ -10,7 +10,7 @@ import math
 DATABASE_URL = os.environ['DATABASE_URL']
 
 class BucksDB(commands.Cog):
-    def __init__(self, bot, ):
+    def __init__(self, bot):
         self.bot = bot
 
         def checkcash(id):
@@ -432,8 +432,8 @@ class BucksDB(commands.Cog):
                     cursor.execute(f'''UPDATE records 
                                     SET ChimkenBucks = ChimkenBucks - {bet}
                                     WHERE User_ID = {id}''')
-                                convar.commit()
-                                convar.close()
+                    convar.commit()
+                    convar.close()
 
                     class Guess(discord.ui.View):
                         def __init__(self, ctx):
