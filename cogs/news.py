@@ -16,7 +16,7 @@ class News(commands.Cog):
 
     @commands.command()
     async def news(self, ctx, message = None):
-        if message is  None:
+        if message is None:
             client = gn.NewsClient()
             topics = client.topics
             newsn = random.choice(client.get_news())
