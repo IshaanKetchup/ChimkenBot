@@ -418,7 +418,7 @@ class BucksDB(commands.Cog):
     @commands.command()
     async def gamble(self, ctx, message = None):
         await ctx.send('Gambling')
-        '''users = self.users
+        users = self.users
         if ctx.author.id in users:
             if message is not None:
                 cash = self.checkcash
@@ -1022,7 +1022,7 @@ class BucksDB(commands.Cog):
                 message = await ctx.send(embed = emb)
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
-            await ctx.reply(embed = emb)'''
+            await ctx.reply(embed = emb)
 
 
 
