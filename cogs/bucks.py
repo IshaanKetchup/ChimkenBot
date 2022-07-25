@@ -13,6 +13,12 @@ class BucksDB(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+        """def checkcash(id):
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+
+            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')"""
+
         def checkrec():
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
@@ -26,7 +32,10 @@ class BucksDB(commands.Cog):
 
             return users
 
-        self.users = checkrec()      
+        self.users = checkrec()
+        #self.checkcash = checkcash(self.ctx.author.id)
+
+        
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -330,7 +339,7 @@ class BucksDB(commands.Cog):
             amount = int(message)
             cash = checkcash(ctx.author.id)
 
-            if amount >= cash:
+            if amount <= cash:
 
                 class Confirmation(discord.ui.View):
 
@@ -373,6 +382,7 @@ class BucksDB(commands.Cog):
                                         SET ChimkenBucks = ChimkenBucks-{}
                                         WHERE User_ID = {}""".format(amount, giver))
                         convar.commit()
+                        convar.close()
                         emb2 = Embed(description = f'{member.mention} has been given ❂{amount} by {ctx.author.mention}!')
                         await interaction.response.edit_message(embed = emb2, view = self)
 
