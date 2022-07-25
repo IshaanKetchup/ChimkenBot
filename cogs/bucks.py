@@ -10,17 +10,14 @@ import math
 DATABASE_URL = os.environ['DATABASE_URL']
 
 class BucksDB(commands.Cog):
-    def __init__(self, bot, ctx):
-        self.ctx = ctx
-        ctx = self.ctx
-        
+    def __init__(self, bot):
         self.bot = bot
 
-        def checkcash(id):
+        """def checkcash(id):
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
 
-            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')
+            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')"""
 
         def checkrec():
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
@@ -36,7 +33,7 @@ class BucksDB(commands.Cog):
             return users
 
         self.users = checkrec()
-        self.checkcash = checkcash(ctx.author.id)
+        #self.checkcash = checkcash(self.ctx.author.id)
 
         
 
@@ -197,7 +194,7 @@ class BucksDB(commands.Cog):
     @commands.cooldown(rate = 1, per = 1800, type=commands.BucketType.user)
     async def steal(self,ctx, member : discord.Member = None):
         users = self.users
-
+        
         if ctx.author.id in users:
             if member is not None:
                 id = member.id
@@ -423,9 +420,15 @@ class BucksDB(commands.Cog):
     @commands.command()
     async def gamble(self, ctx, message = None):
         users = self.users
+        def checkcash(id):
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+
+            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')
+        
         if ctx.author.id in users:
             if message is not None:
-                cash = self.checkcash
+                cash = checkcash(ctx.author.id)
                 bet = int(message.lstrip())
                 if bet<= cash:
                     id = ctx.author.id
