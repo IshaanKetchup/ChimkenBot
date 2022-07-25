@@ -425,6 +425,7 @@ class BucksDB(commands.Cog):
             cursor = convar.cursor()
 
             cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')
+            return cursor.fetchall()[0]
         
         if ctx.author.id in users:
             if message is not None:
