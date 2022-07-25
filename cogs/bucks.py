@@ -13,12 +13,6 @@ class BucksDB(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        """def checkcash(id):
-            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-            cursor = convar.cursor()
-
-            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')"""
-
         def checkrec():
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
@@ -32,10 +26,7 @@ class BucksDB(commands.Cog):
 
             return users
 
-        self.users = checkrec()
-        #self.checkcash = checkcash(self.ctx.author.id)
-
-        
+        self.users = checkrec()      
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -328,68 +319,83 @@ class BucksDB(commands.Cog):
     @commands.cooldown(rate = 1, per = 30, type=commands.BucketType.user)
     async def give(self,ctx, member : discord.Member, message = None):
         users = self.users
+        def checkcash(id):
+            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+            cursor = convar.cursor()
+
+            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')
+            return cursor.fetchall()[0][0]
+
         if ctx.author.id in users:
             amount = int(message)
+            cash = checkcash(ctx.author.id)
 
-            class Confirmation(discord.ui.View):
+            if amount >= cash:
 
-                def __init__(self, ctx):
-                    super().__init__(timeout = 10)
-                    self.ctx = ctx
+                class Confirmation(discord.ui.View):
+
+                    def __init__(self, ctx):
+                        super().__init__(timeout = 10)
+                        self.ctx = ctx
+                        
+                    async def on_timeout(self):
+                        for child in self.children:
+                            child.disabled = True
+                        await self.message.edit(view = self)
+
+                    async def interaction_check(self, interaction):
+                        if interaction.user != self.ctx.author:
+                            embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                            await interaction.response.send_message(embed = embED, ephemeral= True)
+                            return False
+                        else:
+                            return True
                     
-                async def on_timeout(self):
-                    for child in self.children:
-                        child.disabled = True
-                    await self.message.edit(view = self)
+                    @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes')
+                    async def button1_callback(self, button, interaction):
+                        button2 = [x for x in self.children if x.custom_id == 'No'][0]
 
-                async def interaction_check(self, interaction):
-                    if interaction.user != self.ctx.author:
-                        embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
-                        await interaction.response.send_message(embed = embED, ephemeral= True)
-                        return False
-                    else:
-                        return True
-                
-                @discord.ui.button(label = 'Yes', style = discord.ButtonStyle.success, row = 0, custom_id= 'Yes')
-                async def button1_callback(self, button, interaction):
-                    button2 = [x for x in self.children if x.custom_id == 'No'][0]
+                        button.disabled = True
+                        button2.disabled = True
 
-                    button.disabled = True
-                    button2.disabled = True
+                        receiver = member.id
+                        giver = ctx.author.id
+                        amount = int(message)
 
-                    receiver = member.id
-                    giver = ctx.author.id
-                    amount = int(message)
+                        convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+                        cursor = convar.cursor()
+                        
+                        cursor.execute("""UPDATE records
+                                        SET ChimkenBucks = ChimkenBucks+{}
+                                        WHERE User_ID = {}""".format(amount, receiver))
+                        
+                        cursor.execute("""UPDATE records
+                                        SET ChimkenBucks = ChimkenBucks-{}
+                                        WHERE User_ID = {}""".format(amount, giver))
+                        convar.commit()
+                        emb2 = Embed(description = f'{member.mention} has been given ❂{amount} by {ctx.author.mention}!')
+                        await interaction.response.edit_message(embed = emb2, view = self)
 
-                    convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-                    cursor = convar.cursor()
-                    
-                    cursor.execute("""UPDATE records
-                                    SET ChimkenBucks = ChimkenBucks+{}
-                                    WHERE User_ID = {}""".format(amount, receiver))
-                    
-                    cursor.execute("""UPDATE records
-                                    SET ChimkenBucks = ChimkenBucks-{}
-                                    WHERE User_ID = {}""".format(amount, giver))
-                    convar.commit()
-                    emb2 = Embed(description = f'{member.mention} has been given ❂{amount} by {ctx.author.mention}!')
-                    await interaction.response.edit_message(embed = emb2, view = self)
-
-                @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
-                async def button2_callback(self, button, interaction):
-                    button1 = [x for x in self.children if x.custom_id == 'Yes'][0]
+                    @discord.ui.button(label = 'No', style = discord.ButtonStyle.danger, row = 0, custom_id= 'No')
+                    async def button2_callback(self, button, interaction):
+                        button1 = [x for x in self.children if x.custom_id == 'Yes'][0]
 
 
-                    button1.disabled = True
-                    button.disabled = True
+                        button1.disabled = True
+                        button.disabled = True
 
-                    emb2 = Embed(description = f'Okay, transaction cancelled. ')
-                    await interaction.response.edit_message(embed = emb2, view = self)
+                        emb2 = Embed(description = f'Okay, transaction cancelled. ')
+                        await interaction.response.edit_message(embed = emb2, view = self)
 
-            emb = Embed(title = 'How noble!', description = f'You are about to give ❂{amount} to {member.mention}. Are you sure?')
+                emb = Embed(title = 'How noble!', description = f'You are about to give ❂{amount} to {member.mention}. Are you sure?')
 
-            await ctx.reply(embed = emb, view = Confirmation(ctx))
-    
+                await ctx.reply(embed = emb, view = Confirmation(ctx))
+
+            else:
+                emb = discord.Embed(title = 'Don\'t try to fool me >:(', description= 'You don\'t have those many ChimkenBucks')
+                emb.set_author(name = self.bot.user, icon_url= self.bot.user.display_avatar)
+                emb.set_footer(text = 'Calling security')
+                message = await ctx.send(embed = emb)        
         else:
             emb = Embed(title = 'Welcome to ChimkenBucks!', description = 'You don\'t have a record. Type `>start` to begin!.')
             await ctx.reply(embed = emb)
