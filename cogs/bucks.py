@@ -10,7 +10,10 @@ import math
 DATABASE_URL = os.environ['DATABASE_URL']
 
 class BucksDB(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot, ctx):
+        self.ctx = ctx
+        ctx = self.ctx
+        
         self.bot = bot
 
         def checkcash(id):
