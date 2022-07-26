@@ -223,41 +223,45 @@ class BucksDB(commands.Cog):
                             
                             cursor.execute('SELECT * FROM records WHERE User_ID = {}'.format(id))
                             data = cursor.fetchall()
+                            if data != []:
+                                passive = data[0][2]
+                                cash = data[0][1]
 
-                            passive = data[0][2]
-                            cash = data[0][1]
-
-                            if passive == 'False':
-                                if cash>100:
-                                    weight = random.randint(1,100)
-                                    if weight >= 1 and weight <=80:
-                                        steal = random.randint(1,(cash//8))
-                                    else:
-                                        steal = random.randint(1, (cash//4))
+                                if passive == 'False':
+                                    if cash>100:
+                                        weight = random.randint(1,100)
+                                        if weight >= 1 and weight <=80:
+                                            steal = random.randint(1,(cash//8))
+                                        else:
+                                            steal = random.randint(1, (cash//4))
+                                        
+                                        emb = Embed(description = f'{ctx.author.mention} stole ❂{steal} from {member.mention} 😱🤑 ')
+                                        emb.set_footer(text = '💲🤑')
+                                        await ctx.reply(embed = emb)
                                     
-                                    emb = Embed(description = f'{ctx.author.mention} stole ❂{steal} from {member.mention} 😱🤑 ')
-                                    emb.set_footer(text = '💲🤑')
-                                    await ctx.reply(embed = emb)
-                                
-                                    cursor.execute("""UPDATE records
-                                                    SET ChimkenBucks = ChimkenBucks-{}
-                                                    WHERE User_ID = {}""".format(steal, id))
-                                    convar.commit()
+                                        cursor.execute("""UPDATE records
+                                                        SET ChimkenBucks = ChimkenBucks-{}
+                                                        WHERE User_ID = {}""".format(steal, id))
+                                        convar.commit()
 
-                                    cursor.execute("""UPDATE records
-                                                    SET ChimkenBucks = ChimkenBucks+{}
-                                                    WHERE User_ID = {}""".format(steal, robber))
-                                    convar.commit() 
-                                    convar.close()
+                                        cursor.execute("""UPDATE records
+                                                        SET ChimkenBucks = ChimkenBucks+{}
+                                                        WHERE User_ID = {}""".format(steal, robber))
+                                        convar.commit() 
+                                        convar.close()
 
+                                    else:
+                                        emb = Embed(description =  f'Give {member.mention} a break. They have only ❂{cash}', colour = discord.Colour.random())
+                                        emb.set_footer(text = 'lmao')
+                                        await ctx.reply(embed = emb)
                                 else:
-                                    emb = Embed(description =  f'Give {member.mention} a break. They have only ❂{cash}', colour = discord.Colour.random())
+                                    emb = Embed(title  = '**BEWARE, THEIF**', description = f'{member.mention} is in  `Passive Mode`. You cannot steal from them ',colour = discord.Colour.random())
                                     emb.set_footer(text = 'lmao')
                                     await ctx.reply(embed = emb)
                             else:
-                                emb = Embed(title  = '**BEWARE, THEIF**', description = f'{member.mention} is in  `Passive Mode`. You cannot steal from them ',colour = discord.Colour.random())
-                                emb.set_footer(text = 'lmao')
-                                await ctx.reply(embed = emb)
+                                emb = Embed(title = 'Oops :p', description= 'This user has no record')
+                                await ctx.send(embed = emb)
+                                convar.close()
                         else:
                             emb = Embed(description = "You can't steal from yourself, silly" )
                             emb.set_footer(text = 'xD')
