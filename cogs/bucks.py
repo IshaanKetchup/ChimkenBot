@@ -116,23 +116,27 @@ class BucksDB(commands.Cog):
                 id = member.id
                 cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
                 posessions = cursor.fetchall()
+                if posessions != []:
 
-                cash = list(posessions)[0][1]
-                passive = list(posessions)[0][2]
-                cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
-                posessions = cursor.fetchall()
+                    cash = list(posessions)[0][1]
+                    passive = list(posessions)[0][2]
+                    cursor.execute("SELECT * FROM records WHERE User_ID ={}".format(id))
+                    posessions = cursor.fetchall()
 
-                cash = list(posessions)[0][1]
-                passive = list(posessions)[0][2]
+                    cash = list(posessions)[0][1]
+                    passive = list(posessions)[0][2]
 
-                emb = Embed(title = 'Wallet', color = discord.Colour.random())
-                emb.add_field(name = 'ChimkenBucks', value = f'❂{cash}')
-                emb.add_field(name = 'Passive Mode', value = f'{passive}')
-                emb.set_author(name = member, icon_url = member.avatar)
-                emb.set_footer(text = f'Here are the ❂')
-                emb.set_thumbnail(url = url)
-                await ctx.reply(embed = emb)
-                convar.close()
+                    emb = Embed(title = 'Wallet', color = discord.Colour.random())
+                    emb.add_field(name = 'ChimkenBucks', value = f'❂{cash}')
+                    emb.add_field(name = 'Passive Mode', value = f'{passive}')
+                    emb.set_author(name = member, icon_url = member.avatar)
+                    emb.set_footer(text = f'Here are the ❂')
+                    emb.set_thumbnail(url = url)
+                    await ctx.reply(embed = emb)
+                    convar.close()
+                else:
+                    await ctx.send('User has no record.')
+                    convar.close()
             else:
                 member = ctx.author
                 id = ctx.author.id
