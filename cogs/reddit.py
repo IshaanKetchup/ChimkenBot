@@ -37,6 +37,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -118,6 +126,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -202,6 +218,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -286,6 +310,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -370,6 +402,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -454,6 +494,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -538,6 +586,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -623,6 +679,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
@@ -707,6 +771,14 @@ class Reddit(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
 
 
             @discord.ui.button(label="More", style=discord.ButtonStyle.success, row = 0, custom_id= 'More') 
