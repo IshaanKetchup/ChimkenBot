@@ -135,7 +135,8 @@ class BucksDB(commands.Cog):
                     await ctx.reply(embed = emb)
                     convar.close()
                 else:
-                    await ctx.send('User has no record.')
+                    emb = Embed(title = 'Oops :p', description= 'This user has no record')
+                    await ctx.send(embed = emb)
                     convar.close()
             else:
                 member = ctx.author
