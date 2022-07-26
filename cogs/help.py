@@ -160,6 +160,16 @@ class Help(commands.Cog):
                 for child in self.children:
                     child.disabled = True
                 await message.edit(view = self)
+            
+            async def interaction_check(self, interaction):
+                if interaction.user != self.ctx.author:
+                    embED = discord.Embed(description= 'Hey! Those buttons aren\'t for you >:(', color= discord.Color.random())
+                    await interaction.response.send_message(embed = embED, ephemeral= True)
+                    return False
+                else:
+                    return True
+
+
                         
         emb1 = discord.Embed(title = '**REDDIT COMMANDS**', color = discord.Color.random())
         emb1.add_field(name = "Memes", value = '>meme', inline= True)
@@ -175,7 +185,7 @@ class Help(commands.Cog):
         emb1.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
         emb1.set_thumbnail(url = self.bot.user.display_avatar)
 
-        emb2 = discord.Embed(title = "**Currency Commands (DISABLED) **", color = discord.Color.random())
+        emb2 = discord.Embed(title = "**Currency Commands**", color = discord.Color.random())
         emb2.add_field(name = 'Work', value = '>work')
         emb2.add_field(name = 'Steal', value = '>steal @user')
         emb2.add_field(name = 'Give', value = '>gift @user (amount)')
