@@ -13,12 +13,6 @@ class BucksDB(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        """def checkcash(id):
-            convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-            cursor = convar.cursor()
-
-            cursor.execute(f'SELECT ChimkenBucks FROM records where User_ID = {id}')"""
-
         def checkrec():
             convar = psycopg2.connect(DATABASE_URL, sslmode = 'require')
             cursor = convar.cursor()
@@ -33,7 +27,6 @@ class BucksDB(commands.Cog):
             return users
 
         self.users = checkrec()
-        #self.checkcash = checkcash(self.ctx.author.id)
 
         
 
