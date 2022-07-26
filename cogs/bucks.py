@@ -343,7 +343,7 @@ class BucksDB(commands.Cog):
             cursor.execute(f'SELECT * FROM records where User_ID = {id}')
             convar.close()
 
-            return cursor.fetchall()
+            return cursor.fetchall()[0][0]
         
         memberrec = memberid(member.id)
             
