@@ -29,7 +29,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -110,7 +110,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -194,7 +194,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -278,7 +278,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -362,7 +362,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -446,7 +446,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -530,7 +530,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -615,7 +615,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
@@ -699,7 +699,7 @@ class Reddit(commands.Cog):
         class NewPost(discord.ui.View):      
 
             def __init__(self, ctx):
-                super().__init__(timeout = 10)
+                super().__init__(timeout = 30)
                 self.ctx = ctx
                 
             
