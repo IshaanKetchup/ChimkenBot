@@ -69,7 +69,7 @@ class BrainPain(commands.Cog):
                 pass
             emb.set_author(name= ctx.message.author, icon_url = ctx.author.avatar)
             emb.set_thumbnail(url = self.bot.user.display_avatar)
-            await ctx.send(embed = emb)
+            
             
         else:
             emb = discord.Embed(description= 'Ping someone to find out what they\'re doing')
