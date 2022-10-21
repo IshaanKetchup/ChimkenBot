@@ -16,13 +16,15 @@ class Ping(commands.Cog, name = "Ping"):
 
     @commands.command()
     async def announce(self, ctx, *message):
-        notif = ''
-        channel = self.bot.get_channel(int(message[0]))
-        for i in message:
-            if i != message[0]:
-                notif+=i +' '
-                
-        await channel.send(f'{notif}')
+        id = ctx.author.id
+        if id == 572792089599803394 or id == 969540347619328031:
+            notif = ''
+            channel = self.bot.get_channel(int(message[0]))
+            for i in message:
+                if i != message[0]:
+                    notif+=i +' '
+
+            await channel.send(f'{notif}')
         
     
     @commands.command()
