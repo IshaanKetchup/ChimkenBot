@@ -19,7 +19,7 @@ class Ping(commands.Cog, name = "Ping"):
         id = ctx.author.id
         if id == 572792089599803394 or id == 969540347619328031:
             channel = self.bot.get_channel(int(message[0]))
-            channel.send(f'{message}')
+            channel.send(message)
             """notif = ''
             
             for i in message:
