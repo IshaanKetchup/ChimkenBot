@@ -22,7 +22,7 @@ class Ping(commands.Cog, name = "Ping"):
             if i != message[0]:
                 notif+=i +' '
                 
-        await channel.send(f'{member.mention}: {notif}')
+        await channel.send(f'{notif}')
         
     
     @commands.command()
