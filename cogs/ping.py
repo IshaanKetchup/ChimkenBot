@@ -22,7 +22,7 @@ class Ping(commands.Cog, name = "Ping"):
             if count!=0:
                 notif+=i +' '
             else:
-                channel = int(i)
+                channel = bot.get_channel(int(i))
                 count = 1
         await channel.send(f'{member.mention}: {notif}')
         
