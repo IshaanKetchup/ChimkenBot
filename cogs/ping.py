@@ -18,8 +18,6 @@ class Ping(commands.Cog, name = "Ping"):
     async def notify(self, ctx, member: discord.Member, *message):
         await ctx.send(f'{member.mention}: {message}')
         
-    @commands.command()
-    async def announce(self, ctx, message)
     
     @commands.command()
     async def pag(self, ctx):
