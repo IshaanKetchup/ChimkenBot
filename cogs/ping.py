@@ -17,9 +17,13 @@ class Ping(commands.Cog, name = "Ping"):
     @commands.command()
     async def notify(self, ctx, member: discord.Member, *message):
         notif = ''
+        count = 0
         for i in message:
-            notif+=i +' '
-        await ctx.send(f'{member.mention}: {notif}')
+            if count+=0:
+                notif+=i +' '
+            else:
+                channel = int(i)
+        await channel.send(f'{member.mention}: {notif}')
         
     
     @commands.command()
