@@ -19,10 +19,11 @@ class Ping(commands.Cog, name = "Ping"):
         notif = ''
         count = 0
         for i in message:
-            if count+=0:
+            if count!=0:
                 notif+=i +' '
             else:
                 channel = int(i)
+                count = 1
         await channel.send(f'{member.mention}: {notif}')
         
     
