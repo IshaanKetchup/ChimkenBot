@@ -15,7 +15,7 @@ class Ping(commands.Cog, name = "Ping"):
         print('Ping Cog Online')
 
     @commands.command()
-    async def notify(self, ctx, member: discord.Member = None, *message):
+    async def announce(self, ctx, *message):
         notif = ''
         channel = self.bot.get_channel(int(message[0]))
         for i in message:
