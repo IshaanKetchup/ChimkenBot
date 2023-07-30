@@ -5,9 +5,6 @@ from discord import Embed
 import sys
 import os
 
-
-
-
 intents = discord.Intents.all()
 intents.message_content = True
 
@@ -20,21 +17,6 @@ async def on_ready():
         print('Status Online')
         await bot.change_presence(status = discord.Status.online, activity = discord.Game('>help'))
 
-@bot.command()
-async def servers(ctx):
-        id = ctx.author.id
-        channel = bot.get_channel(975378805889851482)
-        if id == 572792089599803394 or id == 969540347619328031:
-                guildcount = 0
-                sno = 1
-                gstr = ''
-                for guild in bot.guilds:
-                        gstr += f'{sno}. {guild.name} - {guild.id} \n'
-                        sno += 1
-
-                emb = Embed(description = f'{gstr}')
-
-                await channel.send(embed = emb)
 
 @bot.command()
 async def load(ctx, extension):
@@ -54,6 +36,6 @@ for filename in os.listdir(r"cogs"):
                 bot.load_extension(f'cogs.{filename[:-3]}', store = False)
 
         
-bot.run(os.environ['DISCORD_TOKEN'])
+bot.run(<DISCORD_TOKEN>) #Enter the token for your Discord bot here
 def p(*args):
        sys.stdout.flush(args[0] % (len(args) > 1 and args[1:] or []))
