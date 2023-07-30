@@ -9,12 +9,12 @@ class Reddit(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.reddit = asyncpraw.Reddit(
-        client_id = 'YyWASgMLM1ijcLkZ-UcA7Q',
-        client_secret = 'Y6bNJTEQjSv67rM2l2ms1JMsRLzymw',
+        client_id = <CLIENT_ID>,
+        client_secret = <CLIENT_SECRET>,
         user_agent = 'Memes from r/Memes for Discord bot',
-        username = 'EyeKay13',
-        password = 'y8CUb:QUiR-2tTJ')
-        
+        username = <USERNAME>,
+        password = <PASSWORD>)
+        #ENTER THE REQUIRED CREDENTIALS FROM REDDIT HERE.
     
     @commands.Cog.listener()
     async def on_ready(self):
